@@ -16,8 +16,7 @@ class Tokenizer {
         uint32_t endIndex;
 
         string expression;
-
-        bool isdelim(char ch);
+        
         int findNextTokenPos();
         int getTokenLength();
 

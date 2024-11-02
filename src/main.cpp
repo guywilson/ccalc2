@@ -110,7 +110,9 @@ int main(int argc, char ** argv) {
         }
         else if (response.compare("version") == 0) {
             printVersion();
-            loop = false;
+        }
+        else if (response.compare("help") == 0 || response.compare("?") == 0) {
+            printUsage();
         }
         else {
             Tokenizer t(response);

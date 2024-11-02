@@ -16,6 +16,26 @@ static inline bool isCharDigit(char ch) {
     return (bool)isdigit((int)ch);
 }
 
+static inline bool isDelimiter(char ch) {
+    static const char * delimiters = "+-*/^:%&|~<>()[]{}";
+
+    for (int i = 0;i < (int)strlen(delimiters);i++) {
+        if (ch == delimiters[i]) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static inline bool isSpaceDelimiter(char ch) {
+    return (bool)isspace((int)ch);
+}
+
+static inline bool isTokenWhiteSpace(string & token) {
+    return isSpaceDelimiter(token[0]);
+}
+
 static bool isNegativeOperand(string & expression, int index) {
     /*
     ** If this is the '-' character and if the next char is a digit (0-9)
@@ -45,18 +65,6 @@ static bool isNegativeOperand(string & expression, int index) {
     return false;
 }
 
-bool Tokenizer::isdelim(char ch) {
-    static const char * delimiters = " \t\n\r+-*/^:%&|~<>()[]{}";
-
-    for (int i = 0;i < (int)strlen(delimiters);i++) {
-        if (ch == delimiters[i]) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 int Tokenizer::findNextTokenPos() {
     char ch;
     int tokenLen = 0;
@@ -64,7 +72,7 @@ int Tokenizer::findNextTokenPos() {
     for (int i = startIndex;i < (int)expression.length();i++) {
         ch = expression[i];
 
-        if (isdelim(ch)) {
+        if (isDelimiter(ch) || isSpaceDelimiter(ch)) {
             /*
             ** Do we have a token on it's own, or is it a delimiter...
             */
@@ -121,9 +129,8 @@ Tokenizer::Tokenizer(const string & expression) {
         
         startIndex = endIndex;
 
-        if (token.compare(" ") != 0) {
+        if (!isTokenWhiteSpace(token)) {
             cout << "Got token '" << token << "'" << endl;
-            
             tokens.push_back(Token(token));
         }
 
