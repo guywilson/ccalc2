@@ -116,6 +116,7 @@ int main(int argc, char ** argv) {
         }
         else {
             Tokenizer t(response);
+            t.tokenize();
         }
     }
 

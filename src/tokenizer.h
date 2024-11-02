@@ -21,9 +21,9 @@ class Tokenizer {
         int getTokenLength();
 
     public:
-        vector<Token> tokens;
-
         Tokenizer(const string & expression);
+
+        vector<Token> tokenize();
 };
 
 #endif

@@ -119,6 +119,10 @@ Tokenizer::Tokenizer(const string & expression) {
     this->expression = expression;
     this->startIndex = 0;
     this->endIndex = 0;
+}
+
+vector<Token> Tokenizer::tokenize() {
+    vector<Token> tokens;
 
     int pos = findNextTokenPos();
 
@@ -136,4 +140,6 @@ Tokenizer::Tokenizer(const string & expression) {
 
         pos = findNextTokenPos();
     }
+
+    return tokens;
 }
