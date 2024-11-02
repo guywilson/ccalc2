@@ -7,7 +7,7 @@
 ###############################################################################
 
 # Version number for CCALC
-MAJOR_VERSION = 2
+MAJOR_VERSION = 0
 MINOR_VERSION = 1
 
 # Directories
@@ -16,7 +16,7 @@ BUILD = build
 DEP = dep
 
 # What is our target
-TARGET = ccalc
+TARGET = ccalc2
 
 # Tools
 VBUILD = vbuild
@@ -33,12 +33,12 @@ CFLAGS_BASE=-c -Wall -pedantic
 CFLAGS_REL=$(CFLAGS_BASE) -O2
 CFLAGS_DBG=$(CFLAGS_BASE) -g
 
-CPPFLAGS_BASE = -c -Wall -pedantic -std=c++17
+CPPFLAGS_BASE = -c -Wall -pedantic -std=c++20
 CPPFLAGS_REL=$(CPPFLAGS_BASE) -O2
 CPPFLAGS_DBG=$(CPPFLAGS_BASE) -g
 
-CPPFLAGS=$(CPPFLAGS_REL)
-CFLAGS=$(CFLAGS_REL)
+CPPFLAGS=$(CPPFLAGS_DBG)
+CFLAGS=$(CFLAGS_DBG)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP)/$*.Td
 
 # Libraries
@@ -82,7 +82,7 @@ install: $(TARGET)
 	cp $(TARGET) /usr/local/bin
 
 version:
-	$(VBUILD) -incfile ccalc.ver -template version.c.template -out $(SOURCE)/version.c -major $(MAJOR_VERSION) -minor $(MINOR_VERSION)
+	$(VBUILD) -incfile ccalc2.ver -template version.c.template -out $(SOURCE)/version.c -major $(MAJOR_VERSION) -minor $(MINOR_VERSION)
 
 clean:
 	rm -r $(BUILD)
