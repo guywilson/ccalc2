@@ -10,12 +10,16 @@ class Token {
         string token;
 
     public:
+        Token() {
+            this->token = "";
+        }
+
         Token(const string & token) {
             this->token = token;
         }
 
         virtual ~Token() {}
-        
+
         virtual string evaluate() {
             return this->token;
         }

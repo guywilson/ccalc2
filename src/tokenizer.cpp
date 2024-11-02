@@ -3,7 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "calc_error.h"
 #include "token.h"
+#include "operand.h"
+#include "operator.h"
 #include "tokenizer.h"
 
 using namespace std;
@@ -135,7 +138,20 @@ vector<Token> Tokenizer::tokenize() {
 
         if (!isTokenWhiteSpace(token)) {
             cout << "Got token '" << token << "'" << endl;
-            tokens.push_back(Token(token));
+
+            Token t;
+
+            if (Operator::isOperator(token)) {
+                t = Operator(token);
+            }
+            else if (Operand::isOperand(token)) {
+                t = Operand(token);
+            }
+            else {
+                throw calc_error(calc_error::buildMsg("Invalid token '%s'", token.c_str()));
+            }
+
+            tokens.push_back(t);
         }
 
         pos = findNextTokenPos();
