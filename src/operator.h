@@ -155,7 +155,7 @@ class Operator : public Token {
                     throw calc_error("Invalid operator");
             }
 
-            return result.toString();
+            return result.toString(INTERMEDIATE_PRECISION);
         }
 };
 

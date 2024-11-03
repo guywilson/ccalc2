@@ -20,7 +20,7 @@ class Expression {
             this->expression = expression;
         }
 
-        string evaluate();
+        string evaluate(long precision);
 };
 
 #endif

@@ -110,7 +110,7 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
     return tokenQueue;
 }
 
-string Expression::evaluate() {
+string Expression::evaluate(long precision) {
     Tokenizer t(expression);
 
     vector<Token *> tokens = t.tokenize();
@@ -156,7 +156,7 @@ string Expression::evaluate() {
         Operand * result = dynamic_cast<Operand *>(tokenStack.top());
         tokenStack.pop();
 
-        answer = result->toString();
+        answer = result->toString(precision);
 
         delete result;
     }

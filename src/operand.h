@@ -14,6 +14,8 @@ using namespace std;
 
 #define MPFR_BASE_PRECISION           1024L
 
+#define INTERMEDIATE_PRECISION          256
+
 #define FORMAT_STRING_LENGTH             32
 #define OUTPUT_MAX_STRING_LENGTH       4096
 
@@ -88,14 +90,14 @@ class Operand : public Token {
             return true;
         }
 
-        string toString() {
+        string toString(long precision) {
             char szOutputString[OUTPUT_MAX_STRING_LENGTH];
             char szFormatString[FORMAT_STRING_LENGTH];
             string output;
 
             switch (radix) {
                 case DECIMAL:
-                    snprintf(szFormatString, FORMAT_STRING_LENGTH, "%%.%ldRf", MPFR_BASE_PRECISION);
+                    snprintf(szFormatString, FORMAT_STRING_LENGTH, "%%.%ldRf", precision);
                     mpfr_snprintf(szOutputString, OUTPUT_MAX_STRING_LENGTH, szFormatString, value);
                     output.assign(szOutputString);
                     break;
@@ -125,7 +127,7 @@ class Operand : public Token {
         }
 
         virtual string evaluate() override {
-            return toString();
+            return toString(INTERMEDIATE_PRECISION);
         }
 
         virtual const string className() override {

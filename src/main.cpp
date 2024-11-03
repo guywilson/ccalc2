@@ -15,6 +15,8 @@
 
 using namespace std;
 
+#define DEFAULT_PRECISION                   8
+
 const char * pszWarranty = 
     "This program comes with ABSOLUTELY NO WARRANTY.\n" \
     "This is free software, and you are welcome to redistribute it\n" \
@@ -97,6 +99,7 @@ static void printUsage(void) {
 
 int main(int argc, char ** argv) {
     bool loop = true;
+    long precision = DEFAULT_PRECISION;
 
     printBanner();
 
@@ -104,8 +107,7 @@ int main(int argc, char ** argv) {
     prompt.setPrompt("calc > ");
 
     while (loop) {
-        // string response = prompt.read();
-        string response = "25 * 7";
+        string response = prompt.read();
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;
@@ -116,11 +118,14 @@ int main(int argc, char ** argv) {
         else if (response.compare("help") == 0 || response.compare("?") == 0) {
             printUsage();
         }
+        else if (response.find("setp", 0) == 0) {
+            string p = response.substr(4);
+            precision = strtol(p.c_str(), NULL, 10);
+        }
         else {
             Expression e(response);
 
-            cout << "Answer: " << e.evaluate() << endl;
-            loop = false;
+            cout << response << " = " << e.evaluate(precision) << endl << endl;
         }
     }
 
