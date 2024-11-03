@@ -9,6 +9,7 @@
 #include <readline/history.h>
 
 #include "tokenizer.h"
+#include "expression.h"
 #include "prompt.h"
 #include "version.h"
 
@@ -115,8 +116,9 @@ int main(int argc, char ** argv) {
             printUsage();
         }
         else {
-            Tokenizer t(response);
-            t.tokenize();
+            Expression e(response);
+
+            cout << "Answer: " << e.evaluate() << endl;
         }
     }
 

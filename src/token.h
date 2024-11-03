@@ -23,6 +23,10 @@ class Token {
         virtual string evaluate() {
             return this->token;
         }
+
+        virtual const string className() {
+            return "Token";
+        }
 };
 
 #endif

@@ -33,6 +33,12 @@ static inline bool isTokenMod(const string & token) {
 }
 
 class Operator : public Token {
+    public:
+        enum associativity {
+            aLeft,
+            aRight
+        };
+
     private:
         enum op {
             operator_plus,
@@ -46,26 +52,40 @@ class Operator : public Token {
         Operand lhs;
         Operand rhs;
         op opType;
+        associativity opAssociativity;
+        int opPrescedence;
 
     public:
         Operator(const string & token) : Token(token) {
             if (isTokenPlus(token)) {
                 opType = operator_plus;
+                opPrescedence = 2;
+                opAssociativity = aLeft;
             }
             else if (isTokenMinus(token)) {
                 opType = operator_minus;
+                opPrescedence = 2;
+                opAssociativity = aLeft;
             }
             else if (isTokenMultiply(token)) {
                 opType = operator_multiply;
+                opPrescedence = 3;
+                opAssociativity = aLeft;
             }
             else if (isTokenDivide(token)) {
                 opType = operator_divide;
+                opPrescedence = 3;
+                opAssociativity = aLeft;
             }
             else if (isTokenMod(token)) {
                 opType = operator_mod;
+                opPrescedence = 3;
+                opAssociativity = aLeft;
             }
             else {
                 opType = operator_unkown;
+                opPrescedence = 0;
+                opAssociativity = aLeft;
             }
         }
 
@@ -80,6 +100,18 @@ class Operator : public Token {
             }
 
             return false;
+        }
+
+        const string className() override {
+            return "Operator";
+        }
+
+        int getPrescedence() {
+            return opPrescedence;
+        }
+
+        associativity getAssociativity() {
+            return opAssociativity;
         }
 
         void setLHOperand(Operand & l) {

@@ -7,13 +7,10 @@
 #include "token.h"
 #include "operand.h"
 #include "operator.h"
+#include "brace.h"
 #include "tokenizer.h"
 
 using namespace std;
-
-static inline bool isCharBrace(char ch) {
-    return (ch == ')' || ch == ']' || ch == '}');
-}
 
 static inline bool isCharDigit(char ch) {
     return (bool)isdigit((int)ch);
@@ -51,7 +48,7 @@ static bool isNegativeOperand(string & expression, int index) {
 
     if (ch == '-' && isdigit(next)) {
         if (index > 0) {
-            if (!isCharBrace(previous) && !isCharDigit(previous)) {
+            if (!Brace::isRightBrace(previous) && !isCharDigit(previous)) {
                 return true;
             }
             else {
@@ -137,8 +134,6 @@ vector<Token> Tokenizer::tokenize() {
         startIndex = endIndex;
 
         if (!isTokenWhiteSpace(token)) {
-            cout << "Got token '" << token << "'" << endl;
-
             Token t;
 
             if (Operator::isOperator(token)) {
@@ -146,6 +141,9 @@ vector<Token> Tokenizer::tokenize() {
             }
             else if (Operand::isOperand(token)) {
                 t = Operand(token);
+            }
+            else if (Brace::isBrace(token)) {
+                t = Brace(token);
             }
             else {
                 throw calc_error(calc_error::buildMsg("Invalid token '%s'", token.c_str()));

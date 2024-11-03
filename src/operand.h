@@ -122,6 +122,10 @@ class Operand : public Token {
             return toString();
         }
 
+        const string className() override {
+            return "Operand";
+        }
+
         const Operand operator+(const Operand & rhs) {
             Operand result;
             mpfr_add(result.value, this->value, rhs.value, MPFR_RNDA);
