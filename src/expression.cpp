@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <vector>
 #include <deque>
@@ -12,25 +13,25 @@
 
 using namespace std;
 
-deque<Token> Expression::getRPNQueue(const vector<Token> & tokens) {
-    deque<Token> tokenQueue;
-    stack<Token> operatorStack;
+deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
+    deque<Token *> tokenQueue;
+    stack<Token *> operatorStack;
 
-    for (Token t : tokens) {
-        Token & token = t;
+    for (int i = 0;i < tokens.size();i++) {
+        Token * token = tokens[i];
 
-        if (token.className() == "Operand") {
+        if (token->className() == "Operand") {
             tokenQueue.push_back(token);
         }
-        else if (token.className() == "Operator") {
-            Operator & o1 = dynamic_cast<Operator &>(token);
+        else if (token->className() == "Operator") {
+            Operator * o1 = dynamic_cast<Operator *>(token);
 
             while (!operatorStack.empty()) {
-                Token & topToken = operatorStack.top();
-                Operator & o2 = dynamic_cast<Operator &>(topToken);
+                Token * topToken = operatorStack.top();
+                Operator * o2 = dynamic_cast<Operator *>(topToken);
 
-                if ((o1.getAssociativity() == Operator::aLeft && o1.getPrescedence() <= o2.getPrescedence()) ||
-                    (o1.getAssociativity() == Operator::aRight && o1.getPrescedence() < o2.getPrescedence()))
+                if ((o1->getAssociativity() == Operator::aLeft && o1->getPrescedence() <= o2->getPrescedence()) ||
+                    (o1->getAssociativity() == Operator::aRight && o1->getPrescedence() < o2->getPrescedence()))
                 {
                     tokenQueue.push_back(operatorStack.top());
                     operatorStack.pop();
@@ -39,10 +40,10 @@ deque<Token> Expression::getRPNQueue(const vector<Token> & tokens) {
 
             operatorStack.push(token);
         }
-        else if (token.className() == "Brace") {
-            Brace & brace = dynamic_cast<Brace &>(token);
+        else if (token->className() == "Brace") {
+            Brace * brace = dynamic_cast<Brace *>(token);
             
-            if (brace.isLeftBrace()) {
+            if (brace->isLeftBrace()) {
                 operatorStack.push(brace);
             }
             else {
@@ -59,13 +60,13 @@ deque<Token> Expression::getRPNQueue(const vector<Token> & tokens) {
                 bool foundLeftParenthesis = false;
 
                 while (!operatorStack.empty()) {
-                    Token & stackToken = operatorStack.top();
+                    Token * stackToken = operatorStack.top();
                     operatorStack.pop();
 
-                    if (stackToken.className() == "Brace") {
-                        Brace & b = dynamic_cast<Brace &>(stackToken);
+                    if (stackToken->className() == "Brace") {
+                        Brace * b = dynamic_cast<Brace *>(stackToken);
 
-                        if (b.isLeftBrace()) {
+                        if (b->isLeftBrace()) {
                             foundLeftParenthesis = true;
                             break;
                         }
@@ -92,10 +93,10 @@ deque<Token> Expression::getRPNQueue(const vector<Token> & tokens) {
         Pop the operator onto the output queue.
     */
     while (!operatorStack.empty()) {
-        Token & stackToken = operatorStack.top();
+        Token * stackToken = operatorStack.top();
         operatorStack.pop();
 
-        if (stackToken.className() == "Brace") {
+        if (stackToken->className() == "Brace") {
             /*
             ** If we've got here, we must have unmatched parenthesis...
             */
@@ -112,30 +113,34 @@ deque<Token> Expression::getRPNQueue(const vector<Token> & tokens) {
 string Expression::evaluate() {
     Tokenizer t(expression);
 
-    deque<Token> tokenQueue = getRPNQueue(t.tokenize());
+    vector<Token *> tokens = t.tokenize();
+    deque<Token *> tokenQueue = getRPNQueue(tokens);
 
-    stack<Token> tokenStack;
+    stack<Token *> tokenStack;
 
     while (!tokenQueue.empty()) {
-        Token & t = tokenQueue.front();
+        Token * t = tokenQueue.front();
         tokenQueue.pop_front();
 
-        if (t.className() == "Operand") {
+        if (t->className() == "Operand") {
             tokenStack.push(t);
         }
-        else if (t.className() == "Operator") {
-            Operator & o = dynamic_cast<Operator &>(t);
+        else if (t->className() == "Operator") {
+            Operator * o = dynamic_cast<Operator *>(t);
 
-            Operand & op1 = dynamic_cast<Operand &>(tokenQueue.front());
-            tokenQueue.pop_front();
+            Operand * op1 = dynamic_cast<Operand *>(tokenStack.top());
+            tokenStack.pop();
 
-            Operand & op2 = dynamic_cast<Operand &>(tokenQueue.front());
-            tokenQueue.pop_front();
+            Operand * op2 = dynamic_cast<Operand *>(tokenStack.top());
+            tokenStack.pop();
 
-            o.setOperands(op1, op2);
-            string r = o.evaluate();
+            o->setOperands(*op1, *op2);
+            string r = o->evaluate();
 
-            Operand result(r);
+            delete op1;
+            delete op2;
+
+            Operand * result = new Operand(r);
             tokenStack.push(result);
         }
     }
@@ -148,10 +153,12 @@ string Expression::evaluate() {
     string answer;
 
     if (tokenStack.size() == 1) {
-        Operand & result = dynamic_cast<Operand &>(tokenStack.top());
+        Operand * result = dynamic_cast<Operand *>(tokenStack.top());
         tokenStack.pop();
 
-        answer = result.toString();
+        answer = result->toString();
+
+        delete result;
     }
     else {
         throw calc_error("Invalid items on stack", __FILE__, __LINE__);

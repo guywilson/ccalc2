@@ -21,7 +21,7 @@ class Brace : public Token {
             }
         }
 
-        const string className() {
+        virtual const string className() override {
             return "Brace";
         }
 

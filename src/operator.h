@@ -102,7 +102,7 @@ class Operator : public Token {
             return false;
         }
 
-        const string className() override {
+        virtual const string className() override {
             return "Operator";
         }
 

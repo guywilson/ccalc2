@@ -36,6 +36,12 @@ class Operand : public Token {
     private:
         int radix;
 
+        void initialiseValue() {
+            mpfr_init2(value, MPFR_BASE_PRECISION);
+
+            radix = DECIMAL;
+        }
+
         string toBase2() {
             char szBinaryString[BASE2_OUTPUT_LEN + 1];
             char szOutputString[BASE2_OUTPUT_LEN + 1];
@@ -62,11 +68,11 @@ class Operand : public Token {
 
     public:
         Operand() {
-            mpfr_init2(value, MPFR_BASE_PRECISION);
+            initialiseValue();
         }
 
         Operand(const string & token) : Token(token) {
-            Operand();
+            initialiseValue();
             mpfr_strtofr(value, token.c_str(), NULL, 10, MPFR_RNDA);
         }
 
@@ -122,7 +128,7 @@ class Operand : public Token {
             return toString();
         }
 
-        const string className() override {
+        virtual const string className() override {
             return "Operand";
         }
 

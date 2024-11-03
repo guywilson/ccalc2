@@ -13,7 +13,7 @@ class Expression {
     private:
         string expression;
 
-        deque<Token> getRPNQueue(const vector<Token> & tokens);
+        deque<Token *> getRPNQueue(vector<Token *> & tokens);
 
     public:
         Expression(const string & expression) {

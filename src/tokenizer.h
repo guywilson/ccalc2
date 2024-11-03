@@ -23,7 +23,7 @@ class Tokenizer {
     public:
         Tokenizer(const string & expression);
 
-        vector<Token> tokenize();
+        vector<Token *> tokenize();
 };
 
 #endif

@@ -104,7 +104,8 @@ int main(int argc, char ** argv) {
     prompt.setPrompt("calc > ");
 
     while (loop) {
-        string response = prompt.read();
+        // string response = prompt.read();
+        string response = "25 * 7";
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;
@@ -119,6 +120,7 @@ int main(int argc, char ** argv) {
             Expression e(response);
 
             cout << "Answer: " << e.evaluate() << endl;
+            loop = false;
         }
     }
 

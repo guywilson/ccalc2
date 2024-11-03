@@ -121,8 +121,8 @@ Tokenizer::Tokenizer(const string & expression) {
     this->endIndex = 0;
 }
 
-vector<Token> Tokenizer::tokenize() {
-    vector<Token> tokens;
+vector<Token *> Tokenizer::tokenize() {
+    vector<Token *> tokens;
 
     int pos = findNextTokenPos();
 
@@ -134,22 +134,21 @@ vector<Token> Tokenizer::tokenize() {
         startIndex = endIndex;
 
         if (!isTokenWhiteSpace(token)) {
-            Token t;
-
             if (Operator::isOperator(token)) {
-                t = Operator(token);
+                Operator * t = new Operator(token);
+                tokens.push_back(t);
             }
             else if (Operand::isOperand(token)) {
-                t = Operand(token);
+                Operand * t = new Operand(token);
+                tokens.push_back(t);
             }
             else if (Brace::isBrace(token)) {
-                t = Brace(token);
+                Brace * t = new Brace(token);
+                tokens.push_back(t);
             }
             else {
                 throw calc_error(calc_error::buildMsg("Invalid token '%s'", token.c_str()));
             }
-
-            tokens.push_back(t);
         }
 
         pos = findNextTokenPos();
