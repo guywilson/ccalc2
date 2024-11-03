@@ -127,6 +127,7 @@ int main(int argc, char ** argv) {
             Expression e(response);
 
             cout << response << " = " << e.evaluate(precision) << endl << endl;
+            loop = false;
         }
     }
 
