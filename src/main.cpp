@@ -15,7 +15,7 @@
 
 using namespace std;
 
-#define DEFAULT_PRECISION                   8
+#define DEFAULT_PRECISION                   12
 
 const char * pszWarranty = 
     "This program comes with ABSOLUTELY NO WARRANTY.\n" \
@@ -107,7 +107,8 @@ int main(int argc, char ** argv) {
     prompt.setPrompt("calc > ");
 
     while (loop) {
-        string response = prompt.read();
+        // string response = prompt.read();
+        string response = "3 / (5 + 3)";
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;

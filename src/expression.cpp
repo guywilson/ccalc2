@@ -28,6 +28,11 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
 
             while (!operatorStack.empty()) {
                 Token * topToken = operatorStack.top();
+
+                if (topToken->className() != "Operator") {
+                    break;
+                }
+
                 Operator * o2 = dynamic_cast<Operator *>(topToken);
 
                 if ((o1->getAssociativity() == Operator::aLeft && o1->getPrescedence() <= o2->getPrescedence()) ||
