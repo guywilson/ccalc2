@@ -108,7 +108,7 @@ int main(int argc, char ** argv) {
 
     while (loop) {
         // string response = prompt.read();
-        string response = "3 / (5 + 3)";
+        string response = "3 / (pi + 3)";
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;

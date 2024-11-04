@@ -6,6 +6,7 @@
 #include "calc_error.h"
 #include "token.h"
 #include "operand.h"
+#include "constant.h"
 #include "operator.h"
 #include "brace.h"
 #include "tokenizer.h"
@@ -140,6 +141,10 @@ vector<Token *> Tokenizer::tokenize() {
             }
             else if (Operand::isOperand(token)) {
                 Operand * t = new Operand(token);
+                tokens.push_back(t);
+            }
+            else if (Constant::isConstant(token)) {
+                Constant * t = new Constant(token);
                 tokens.push_back(t);
             }
             else if (Brace::isBrace(token)) {
