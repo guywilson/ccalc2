@@ -131,19 +131,19 @@ string Expression::evaluate(long precision) {
             tokenStack.push(t);
         }
         else if (t->className() == "Operator") {
-            Operator * o = dynamic_cast<Operator *>(t);
+            Operator * op = dynamic_cast<Operator *>(t);
 
-            Operand * op1 = dynamic_cast<Operand *>(tokenStack.top());
+            Operand * o2 = dynamic_cast<Operand *>(tokenStack.top());
             tokenStack.pop();
 
-            Operand * op2 = dynamic_cast<Operand *>(tokenStack.top());
+            Operand * o1 = dynamic_cast<Operand *>(tokenStack.top());
             tokenStack.pop();
 
-            o->setOperands(*op1, *op2);
-            string r = o->evaluate();
+            op->setOperands(*o1, *o2);
+            string r = op->evaluate();
 
-            delete op1;
-            delete op2;
+            delete o1;
+            delete o2;
 
             Operand * result = new Operand(r);
             tokenStack.push(result);
