@@ -9,6 +9,11 @@ class Token {
     private:
         string token;
 
+    protected:
+        void setToken(const string & token) {
+            this->token = token;
+        }
+        
     public:
         Token() {
             this->token = "";

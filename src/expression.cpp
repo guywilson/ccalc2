@@ -116,9 +116,9 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
 }
 
 string Expression::evaluate(long precision) {
-    Tokenizer t(expression);
+    Tokenizer tokenizer(expression);
 
-    vector<Token *> tokens = t.tokenize();
+    vector<Token *> tokens = tokenizer.tokenize();
     deque<Token *> tokenQueue = getRPNQueue(tokens);
 
     stack<Token *> tokenStack;
@@ -142,7 +142,10 @@ string Expression::evaluate(long precision) {
             op->setOperands(*o1, *o2);
             string r = op->evaluate();
 
+            o1->clear();
             delete o1;
+
+            o2->clear();
             delete o2;
 
             Operand * result = new Operand(r);
@@ -163,6 +166,7 @@ string Expression::evaluate(long precision) {
 
         answer = result->toString(precision);
 
+        result->clear();
         delete result;
     }
     else {

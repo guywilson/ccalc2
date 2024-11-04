@@ -40,7 +40,6 @@ class Operand : public Token {
 
         void initialiseValue() {
             mpfr_init2(value, MPFR_BASE_PRECISION);
-
             radix = DECIMAL;
         }
 
@@ -78,6 +77,15 @@ class Operand : public Token {
             mpfr_strtofr(value, token.c_str(), NULL, 10, MPFR_RNDA);
         }
 
+        Operand(mpfr_t src) {
+            initialiseValue();
+            mpfr_set(value, src, MPFR_RNDA);
+        }
+
+        void clear() {
+            mpfr_clear(value);
+        }
+        
         static bool isOperand(const string & token) {
             for (int i = 0;i < token.length();i++) {
                 char ch = token[i];
@@ -137,30 +145,35 @@ class Operand : public Token {
         const Operand operator+(const Operand & rhs) {
             Operand result;
             mpfr_add(result.value, this->value, rhs.value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
 
         const Operand operator-(const Operand & rhs) {
             Operand result;
             mpfr_sub(result.value, this->value, rhs.value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
 
         const Operand operator*(const Operand & rhs) {
             Operand result;
             mpfr_mul(result.value, this->value, rhs.value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
 
         const Operand operator/(const Operand & rhs) {
             Operand result;
             mpfr_div(result.value, this->value, rhs.value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
 
         const Operand operator%(const Operand & rhs) {
             Operand result;
             mpfr_remainder(result.value, this->value, rhs.value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
 };
