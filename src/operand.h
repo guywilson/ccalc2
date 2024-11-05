@@ -330,6 +330,30 @@ class Operand : public Token {
             result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
+
+        const Operand operator&(const Operand & rhs) {
+            Operand result;
+            mpfr_set_ui(result.value, (mpfr_get_ui(this->value, MPFR_RNDA) & mpfr_get_ui(rhs.value, MPFR_RNDA)), MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand operator|(const Operand & rhs) {
+            Operand result;
+            mpfr_set_ui(result.value, (mpfr_get_ui(this->value, MPFR_RNDA) | mpfr_get_ui(rhs.value, MPFR_RNDA)), MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        /*
+        ** Here we're using the logical OR operator (||) to mean bitwise XOR...
+        */
+        const Operand operator||(const Operand & rhs) {
+            Operand result;
+            mpfr_set_ui(result.value, (mpfr_get_ui(this->value, MPFR_RNDA) ^ mpfr_get_ui(rhs.value, MPFR_RNDA)), MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
 };
 
 #endif

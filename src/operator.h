@@ -36,13 +36,28 @@ static inline bool isTokenPower(const string & token) {
     return (token.compare("^") == 0);
 }
 
+static inline bool isTokenAND(const string & token) {
+    return (token.compare("&") == 0);
+}
+
+static inline bool isTokenOR(const string & token) {
+    return (token.compare("|") == 0);
+}
+
+static inline bool isTokenXOR(const string & token) {
+    return (token.compare("~") == 0);
+}
+
 static inline bool isTokenOperator(const string & token) {
     return (isTokenPlus(token) ||
             isTokenMinus(token) ||
             isTokenMultiply(token) ||
             isTokenDivide(token) ||
             isTokenMod(token) ||
-            isTokenPower(token));
+            isTokenPower(token) ||
+            isTokenAND(token) ||
+            isTokenOR(token) ||
+            isTokenXOR(token));
 }
 
 class Operator : public Token {
@@ -60,6 +75,9 @@ class Operator : public Token {
             operator_divide,
             operator_mod,
             operator_power,
+            operator_and,
+            operator_or,
+            operator_xor,
             operator_unkown
         };
 
@@ -106,6 +124,21 @@ class Operator : public Token {
                 opType = operator_power;
                 opPrescedence = 4;
                 opAssociativity = aRight;
+            }
+            else if (isTokenAND(token)) {
+                opType = operator_and;
+                opPrescedence = 4;
+                opAssociativity = aLeft;
+            }
+            else if (isTokenOR(token)) {
+                opType = operator_or;
+                opPrescedence = 4;
+                opAssociativity = aLeft;
+            }
+            else if (isTokenXOR(token)) {
+                opType = operator_xor;
+                opPrescedence = 4;
+                opAssociativity = aLeft;
             }
             else {
                 opType = operator_unkown;
@@ -169,6 +202,18 @@ class Operator : public Token {
 
                 case operator_power:
                     result = lhs ^ rhs;
+                    break;
+
+                case operator_and:
+                    result = lhs & rhs;
+                    break;
+
+                case operator_or:
+                    result = lhs | rhs;
+                    break;
+
+                case operator_xor:
+                    result = lhs || rhs;
                     break;
 
                 default:
