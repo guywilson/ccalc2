@@ -8,6 +8,7 @@
 #include "operand.h"
 #include "constant.h"
 #include "operator.h"
+#include "function.h"
 #include "brace.h"
 #include "tokenizer.h"
 
@@ -137,6 +138,10 @@ vector<Token *> Tokenizer::tokenize() {
         if (!isTokenWhiteSpace(token)) {
             if (Operator::isOperator(token)) {
                 Operator * t = new Operator(token);
+                tokens.push_back(t);
+            }
+            else if (Function::isFunction(token)) {
+                Function * t = new Function(token);
                 tokens.push_back(t);
             }
             else if (Operand::isOperand(token)) {

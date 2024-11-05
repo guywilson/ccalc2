@@ -52,10 +52,16 @@ class Operator : public Token {
         Operand lhs;
         Operand rhs;
         op opType;
+
+    protected:
         associativity opAssociativity;
         int opPrescedence;
 
     public:
+        Operator() : Token() {
+            opType = operator_unkown;
+        }
+
         Operator(const string & token) : Token(token) {
             if (isTokenPlus(token)) {
                 opType = operator_plus;

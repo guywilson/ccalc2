@@ -107,8 +107,7 @@ int main(int argc, char ** argv) {
     prompt.setPrompt("calc > ");
 
     while (loop) {
-        // string response = prompt.read();
-        string response = "3 / (pi + 3)";
+        string response = prompt.read();
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;
@@ -127,7 +126,6 @@ int main(int argc, char ** argv) {
             Expression e(response);
 
             cout << response << " = " << e.evaluate(precision) << endl << endl;
-            loop = false;
         }
     }
 

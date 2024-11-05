@@ -7,11 +7,28 @@
 #include "calc_error.h"
 #include "token.h"
 #include "operator.h"
+#include "function.h"
 #include "brace.h"
 #include "tokenizer.h"
 #include "expression.h"
 
 using namespace std;
+
+static inline bool isOperand(Token * t) {
+    return (t->className() == TOKEN_CLASSNAME_OPERAND);
+}
+
+static inline bool isFunction(Token * t) {
+    return (t->className() == TOKEN_CLASSNAME_FUNCTION);
+}
+
+static inline bool isOperator(Token * t) {
+    return (t->className() == TOKEN_CLASSNAME_OPERATOR);
+}
+
+static inline bool isBrace(Token * t) {
+    return (t->className() == TOKEN_CLASSNAME_BRACE);
+}
 
 deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
     deque<Token *> tokenQueue;
@@ -20,16 +37,19 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
     for (int i = 0;i < tokens.size();i++) {
         Token * token = tokens[i];
 
-        if (token->className() == "Operand") {
+        if (isOperand(token)) {
             tokenQueue.push_back(token);
         }
-        else if (token->className() == "Operator") {
+        else if (isFunction(token)) {
+            operatorStack.push(token);
+        }
+        else if (isOperator(token)) {
             Operator * o1 = dynamic_cast<Operator *>(token);
 
             while (!operatorStack.empty()) {
                 Token * topToken = operatorStack.top();
 
-                if (topToken->className() != "Operator") {
+                if (!isOperator(topToken) && !isFunction(topToken)) {
                     break;
                 }
 
@@ -45,7 +65,7 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
 
             operatorStack.push(token);
         }
-        else if (token->className() == "Brace") {
+        else if (isBrace(token)) {
             Brace * brace = dynamic_cast<Brace *>(token);
             
             if (brace->isLeftBrace()) {
@@ -101,7 +121,7 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
         Token * stackToken = operatorStack.top();
         operatorStack.pop();
 
-        if (stackToken->className() == "Brace") {
+        if (isBrace(stackToken)) {
             /*
             ** If we've got here, we must have unmatched parenthesis...
             */
@@ -127,10 +147,25 @@ string Expression::evaluate(long precision) {
         Token * t = tokenQueue.front();
         tokenQueue.pop_front();
 
-        if (t->className() == "Operand") {
+        if (isOperand(t)) {
             tokenStack.push(t);
         }
-        else if (t->className() == "Operator") {
+        else if (isFunction(t)) {
+            Function * function = dynamic_cast<Function *>(t);
+
+            Operand * o1 = dynamic_cast<Operand *>(tokenStack.top());
+            tokenStack.pop();
+
+            function->setOperand(*o1);
+            string r = function->evaluate();
+
+            o1->clear();
+            delete o1;
+
+            Operand * result = new Operand(r);
+            tokenStack.push(result);
+        }
+        else if (isOperator(t)) {
             Operator * op = dynamic_cast<Operator *>(t);
 
             Operand * o2 = dynamic_cast<Operand *>(tokenStack.top());

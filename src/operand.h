@@ -32,9 +32,6 @@ using namespace std;
 #define BINARY                          BASE_2
 
 class Operand : public Token {
-    protected:
-        mpfr_t value;
-
     private:
         int radix;
 
@@ -68,6 +65,8 @@ class Operand : public Token {
         }
 
     public:
+        mpfr_t value;
+
         Operand() {
             initialiseValue();
         }
@@ -85,7 +84,7 @@ class Operand : public Token {
         void clear() {
             mpfr_clear(value);
         }
-        
+
         static bool isOperand(const string & token) {
             for (int i = 0;i < token.length();i++) {
                 char ch = token[i];
@@ -140,6 +139,118 @@ class Operand : public Token {
 
         virtual const string className() override {
             return "Operand";
+        }
+
+        const Operand sin() {
+            Operand result;
+            mpfr_sinu(result.value, this->value, 360U, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand cos() {
+            Operand result;
+            mpfr_cosu(result.value, this->value, 360U, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand tan() {
+            Operand result;
+            mpfr_tanu(result.value, this->value, 360U, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand asin() {
+            Operand result;
+            mpfr_asinu(result.value, this->value, 360U, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand acos() {
+            Operand result;
+            mpfr_acosu(result.value, this->value, 360U, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand atan() {
+            Operand result;
+            mpfr_atanu(result.value, this->value, 360U, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand sinh() {
+            Operand result;
+            mpfr_sinh(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand cosh() {
+            Operand result;
+            mpfr_cosh(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand tanh() {
+            Operand result;
+            mpfr_tanh(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand asinh() {
+            Operand result;
+            mpfr_asinh(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand acosh() {
+            Operand result;
+            mpfr_acosh(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand atanh() {
+            Operand result;
+            mpfr_atanh(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand sqrt() {
+            Operand result;
+            mpfr_sqrt(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand log() {
+            Operand result;
+            mpfr_log10(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand ln() {
+            Operand result;
+            mpfr_log(result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand factorial() {
+            Operand result;
+            mpfr_fac_ui(result.value, mpfr_get_ui(this->value, MPFR_RNDA), MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
         }
 
         const Operand operator+(const Operand & rhs) {
