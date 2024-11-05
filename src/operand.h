@@ -253,6 +253,42 @@ class Operand : public Token {
             return result;
         }
 
+        const Operand deg() {
+            Operand result;
+
+            mpfr_t  pi;
+            mpfr_t  one_eighty;
+
+            mpfr_init2(pi, MPFR_BASE_PRECISION);
+            mpfr_init2(one_eighty, MPFR_BASE_PRECISION);
+
+            mpfr_const_pi(pi, MPFR_RNDA);
+            mpfr_set_ui(one_eighty, 180U, MPFR_RNDA);
+            
+            mpfr_div(result.value, one_eighty, pi, MPFR_RNDA);
+            mpfr_mul(result.value, result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
+        const Operand rad() {
+            Operand result;
+
+            mpfr_t  pi;
+            mpfr_t  one_eighty;
+
+            mpfr_init2(pi, MPFR_BASE_PRECISION);
+            mpfr_init2(one_eighty, MPFR_BASE_PRECISION);
+
+            mpfr_const_pi(pi, MPFR_RNDA);
+            mpfr_set_ui(one_eighty, 180U, MPFR_RNDA);
+            
+            mpfr_div(result.value, pi, one_eighty, MPFR_RNDA);
+            mpfr_mul(result.value, result.value, this->value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
         const Operand operator+(const Operand & rhs) {
             Operand result;
             mpfr_add(result.value, this->value, rhs.value, MPFR_RNDA);

@@ -76,6 +76,14 @@ static inline bool isTokenFunctionFact(const string & token) {
     return (token.compare("fact") == 0);
 }
 
+static inline bool isTokenFunctionDeg(const string & token) {
+    return (token.compare("deg") == 0);
+}
+
+static inline bool isTokenFunctionRad(const string & token) {
+    return (token.compare("rad") == 0);
+}
+
 static inline bool isTokenFunction(const string & token) {
     return (isTokenFunctionSin(token) ||
             isTokenFunctionCos(token) ||
@@ -92,7 +100,9 @@ static inline bool isTokenFunction(const string & token) {
             isTokenFunctionSqrt(token) ||
             isTokenFunctionLog(token) ||
             isTokenFunctionLn(token) ||
-            isTokenFunctionFact(token));
+            isTokenFunctionFact(token) ||
+            isTokenFunctionDeg(token) ||
+            isTokenFunctionRad(token));
 }
 
 class Function : public Operator {
@@ -113,7 +123,10 @@ class Function : public Operator {
             function_sqrt,
             function_log,
             function_ln,
-            function_fact
+            function_fact,
+            function_deg,
+            function_rad,
+            function_unkown
         };
 
         function_id functionId;
@@ -168,6 +181,15 @@ class Function : public Operator {
             }
             else if (isTokenFunctionFact(token)) {
                 functionId = function_fact;
+            }
+            else if (isTokenFunctionDeg(token)) {
+                functionId = function_deg;
+            }
+            else if (isTokenFunctionRad(token)) {
+                functionId = function_rad;
+            }
+            else {
+                functionId = function_unkown;
             }
 
             opAssociativity = aLeft;
@@ -255,6 +277,17 @@ class Function : public Operator {
                 case function_fact:
                     result = functionOperand.factorial();
                     break;
+                
+                case function_deg:
+                    result = functionOperand.deg();
+                    break;
+                
+                case function_rad:
+                    result = functionOperand.rad();
+                    break;
+
+                default:
+                    throw calc_error("Invalid function");
             }
 
             return result.toString(INTERMEDIATE_PRECISION);
