@@ -8,12 +8,15 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include "calc_error.h"
 #include "tokenizer.h"
 #include "expression.h"
 #include "prompt.h"
 #include "version.h"
 
 using namespace std;
+
+// #define DEBUG_CALCULATION                   "15 || 2"
 
 #define DEFAULT_PRECISION                   12
 
@@ -107,7 +110,12 @@ int main(int argc, char ** argv) {
     prompt.setPrompt("calc > ");
 
     while (loop) {
+#ifndef DEBUG_CALCULATION
         string response = prompt.read();
+#else
+        string response = DEBUG_CALCULATION;
+        loop = false;
+#endif
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;
@@ -123,9 +131,13 @@ int main(int argc, char ** argv) {
             precision = strtol(p.c_str(), NULL, 10);
         }
         else {
-            Expression e(response);
-
-            cout << response << " = " << e.evaluate(precision) << endl << endl;
+            try {
+                Expression e(response);
+                cout << response << " = " << e.evaluate(precision) << endl << endl;
+            }
+            catch (calc_error & e) {
+                cout << "Error: " << e.what() << endl << endl;
+            }
         }
     }
 

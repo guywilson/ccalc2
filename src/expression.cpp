@@ -153,8 +153,14 @@ string Expression::evaluate(long precision) {
         else if (isFunction(t)) {
             Function * function = dynamic_cast<Function *>(t);
 
-            Operand * o1 = dynamic_cast<Operand *>(tokenStack.top());
-            tokenStack.pop();
+            Operand * o1;
+            if (tokenStack.size()) {
+                o1 = dynamic_cast<Operand *>(tokenStack.top());
+                tokenStack.pop();
+            }
+            else {
+                throw calc_error("Calculation error - No operand found for function");
+            }
 
             function->setOperand(*o1);
             string r = function->evaluate();
@@ -168,11 +174,23 @@ string Expression::evaluate(long precision) {
         else if (isOperator(t)) {
             Operator * op = dynamic_cast<Operator *>(t);
 
-            Operand * o2 = dynamic_cast<Operand *>(tokenStack.top());
-            tokenStack.pop();
+            Operand * o2;
+            if (tokenStack.size()) {
+                o2 = dynamic_cast<Operand *>(tokenStack.top());
+                tokenStack.pop();
+            }
+            else {
+                throw calc_error("Calculation error - Operand found for operator");
+            }
 
-            Operand * o1 = dynamic_cast<Operand *>(tokenStack.top());
-            tokenStack.pop();
+            Operand * o1;
+            if (tokenStack.size()) {
+                o1 = dynamic_cast<Operand *>(tokenStack.top());
+                tokenStack.pop();
+            }
+            else {
+                throw calc_error("Calculation error - Operand found for operator");
+            }
 
             op->setOperands(*o1, *o2);
             string r = op->evaluate();
