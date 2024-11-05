@@ -32,6 +32,19 @@ static inline bool isTokenMod(const string & token) {
     return (token.compare("%") == 0);
 }
 
+static inline bool isTokenPower(const string & token) {
+    return (token.compare("^") == 0);
+}
+
+static inline bool isTokenOperator(const string & token) {
+    return (isTokenPlus(token) ||
+            isTokenMinus(token) ||
+            isTokenMultiply(token) ||
+            isTokenDivide(token) ||
+            isTokenMod(token) ||
+            isTokenPower(token));
+}
+
 class Operator : public Token {
     public:
         enum associativity {
@@ -46,6 +59,7 @@ class Operator : public Token {
             operator_multiply,
             operator_divide,
             operator_mod,
+            operator_power,
             operator_unkown
         };
 
@@ -88,6 +102,11 @@ class Operator : public Token {
                 opPrescedence = 3;
                 opAssociativity = aLeft;
             }
+            else if (isTokenPower(token)) {
+                opType = operator_power;
+                opPrescedence = 4;
+                opAssociativity = aRight;
+            }
             else {
                 opType = operator_unkown;
                 opPrescedence = 0;
@@ -96,16 +115,7 @@ class Operator : public Token {
         }
 
         static bool isOperator(const string & token) {
-            if (isTokenPlus(token) ||
-                isTokenMinus(token) ||
-                isTokenMultiply(token) ||
-                isTokenDivide(token) ||
-                isTokenMod(token))
-            {
-                return true;
-            }
-
-            return false;
+            return isTokenOperator(token);
         }
 
         virtual const string className() override {
@@ -155,6 +165,10 @@ class Operator : public Token {
 
                 case operator_mod:
                     result = lhs % rhs;
+                    break;
+
+                case operator_power:
+                    result = lhs ^ rhs;
                     break;
 
                 default:

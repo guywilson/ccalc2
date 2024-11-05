@@ -287,6 +287,13 @@ class Operand : public Token {
             result.setToken(result.toString(INTERMEDIATE_PRECISION));
             return result;
         }
+
+        const Operand operator^(const Operand & rhs) {
+            Operand result;
+            mpfr_pow(result.value, this->value, rhs.value, MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
 };
 
 #endif
