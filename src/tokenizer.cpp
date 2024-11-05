@@ -10,6 +10,7 @@
 #include "operator.h"
 #include "function.h"
 #include "brace.h"
+#include "container.h"
 #include "tokenizer.h"
 
 using namespace std;
@@ -123,8 +124,8 @@ Tokenizer::Tokenizer(const string & expression) {
     this->endIndex = 0;
 }
 
-vector<Token *> Tokenizer::tokenize() {
-    vector<Token *> tokens;
+TokenArray Tokenizer::tokenize() {
+    TokenArray tokens;
 
     int pos = findNextTokenPos();
 
@@ -138,23 +139,23 @@ vector<Token *> Tokenizer::tokenize() {
         if (!isTokenWhiteSpace(token)) {
             if (Operator::isOperator(token)) {
                 Operator * t = new Operator(token);
-                tokens.push_back(t);
+                tokens.add(t);
             }
             else if (Function::isFunction(token)) {
                 Function * t = new Function(token);
-                tokens.push_back(t);
+                tokens.add(t);
             }
             else if (Operand::isOperand(token)) {
                 Operand * t = new Operand(token);
-                tokens.push_back(t);
+                tokens.add(t);
             }
             else if (Constant::isConstant(token)) {
                 Constant * t = new Constant(token);
-                tokens.push_back(t);
+                tokens.add(t);
             }
             else if (Brace::isBrace(token)) {
                 Brace * t = new Brace(token);
-                tokens.push_back(t);
+                tokens.add(t);
             }
             else {
                 throw calc_error(calc_error::buildMsg("Invalid token '%s'", token.c_str()));

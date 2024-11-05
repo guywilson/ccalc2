@@ -9,36 +9,37 @@
 #include "operator.h"
 #include "function.h"
 #include "brace.h"
+#include "container.h"
 #include "tokenizer.h"
 #include "expression.h"
 
 using namespace std;
 
 static inline bool isOperand(Token * t) {
-    return (t->className() == TOKEN_CLASSNAME_OPERAND);
+    return (t->className() == Operand::CLASS_NAME());
 }
 
 static inline bool isFunction(Token * t) {
-    return (t->className() == TOKEN_CLASSNAME_FUNCTION);
+    return (t->className() == Function::CLASS_NAME());
 }
 
 static inline bool isOperator(Token * t) {
-    return (t->className() == TOKEN_CLASSNAME_OPERATOR);
+    return (t->className() == Operator::CLASS_NAME());
 }
 
 static inline bool isBrace(Token * t) {
-    return (t->className() == TOKEN_CLASSNAME_BRACE);
+    return (t->className() == Brace::CLASS_NAME());
 }
 
-deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
-    deque<Token *> tokenQueue;
-    stack<Token *> operatorStack;
+TokenQueue Expression::getRPNQueue(TokenArray & tokens) {
+    TokenQueue tokenQueue;
+    TokenStack operatorStack;
 
     for (int i = 0;i < tokens.size();i++) {
-        Token * token = tokens[i];
+        Token * token = tokens.at(i);
 
         if (isOperand(token)) {
-            tokenQueue.push_back(token);
+            tokenQueue.put(token);
         }
         else if (isFunction(token)) {
             operatorStack.push(token);
@@ -46,8 +47,8 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
         else if (isOperator(token)) {
             Operator * o1 = dynamic_cast<Operator *>(token);
 
-            while (!operatorStack.empty()) {
-                Token * topToken = operatorStack.top();
+            while (!operatorStack.isEmpty()) {
+                Token * topToken = operatorStack.peek();
 
                 if (!isOperator(topToken) && !isFunction(topToken)) {
                     break;
@@ -58,8 +59,7 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
                 if ((o1->getAssociativity() == Operator::aLeft && o1->getPrescedence() <= o2->getPrescedence()) ||
                     (o1->getAssociativity() == Operator::aRight && o1->getPrescedence() < o2->getPrescedence()))
                 {
-                    tokenQueue.push_back(operatorStack.top());
-                    operatorStack.pop();
+                    tokenQueue.put(operatorStack.pop());
                 }
             }
 
@@ -84,9 +84,8 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
                 */
                 bool foundLeftParenthesis = false;
 
-                while (!operatorStack.empty()) {
-                    Token * stackToken = operatorStack.top();
-                    operatorStack.pop();
+                while (!operatorStack.isEmpty()) {
+                    Token * stackToken = operatorStack.pop();
 
                     if (stackToken->className() == "Brace") {
                         Brace * b = dynamic_cast<Brace *>(stackToken);
@@ -97,7 +96,7 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
                         }
                     }
                     else {
-                        tokenQueue.push_back(stackToken);
+                        tokenQueue.put(stackToken);
                     }
                 }
 
@@ -117,9 +116,8 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
         then there are mismatched parentheses.
         Pop the operator onto the output queue.
     */
-    while (!operatorStack.empty()) {
-        Token * stackToken = operatorStack.top();
-        operatorStack.pop();
+    while (!operatorStack.isEmpty()) {
+        Token * stackToken = operatorStack.pop();
 
         if (isBrace(stackToken)) {
             /*
@@ -128,7 +126,7 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
             throw calc_error("getRPNQueue(): Error unmatched parenthesis");
         }
         else {
-            tokenQueue.push_back(stackToken);
+            tokenQueue.put(stackToken);
         }
     }
 
@@ -138,14 +136,13 @@ deque<Token *> Expression::getRPNQueue(vector<Token *> & tokens) {
 string Expression::evaluate(long precision) {
     Tokenizer tokenizer(expression);
 
-    vector<Token *> tokens = tokenizer.tokenize();
-    deque<Token *> tokenQueue = getRPNQueue(tokens);
+    TokenArray tokens = tokenizer.tokenize();
+    TokenQueue tokenQueue = getRPNQueue(tokens);
 
-    stack<Token *> tokenStack;
+    TokenStack tokenStack;
 
-    while (!tokenQueue.empty()) {
-        Token * t = tokenQueue.front();
-        tokenQueue.pop_front();
+    while (!tokenQueue.isEmpty()) {
+        Token * t = tokenQueue.get();
 
         if (isOperand(t)) {
             tokenStack.push(t);
@@ -153,14 +150,7 @@ string Expression::evaluate(long precision) {
         else if (isFunction(t)) {
             Function * function = dynamic_cast<Function *>(t);
 
-            Operand * o1;
-            if (tokenStack.size()) {
-                o1 = dynamic_cast<Operand *>(tokenStack.top());
-                tokenStack.pop();
-            }
-            else {
-                throw calc_error("Calculation error - No operand found for function");
-            }
+            Operand * o1 = tokenStack.poperand();
 
             function->setOperand(*o1);
             string r = function->evaluate();
@@ -174,23 +164,8 @@ string Expression::evaluate(long precision) {
         else if (isOperator(t)) {
             Operator * op = dynamic_cast<Operator *>(t);
 
-            Operand * o2;
-            if (tokenStack.size()) {
-                o2 = dynamic_cast<Operand *>(tokenStack.top());
-                tokenStack.pop();
-            }
-            else {
-                throw calc_error("Calculation error - Operand found for operator");
-            }
-
-            Operand * o1;
-            if (tokenStack.size()) {
-                o1 = dynamic_cast<Operand *>(tokenStack.top());
-                tokenStack.pop();
-            }
-            else {
-                throw calc_error("Calculation error - Operand found for operator");
-            }
+            Operand * o2 = tokenStack.poperand();
+            Operand * o1 = tokenStack.poperand();
 
             op->setOperands(*o1, *o2);
             string r = op->evaluate();
@@ -214,8 +189,7 @@ string Expression::evaluate(long precision) {
     string answer;
 
     if (tokenStack.size() == 1) {
-        Operand * result = dynamic_cast<Operand *>(tokenStack.top());
-        tokenStack.pop();
+        Operand * result = tokenStack.poperand();
 
         answer = result->toString(precision);
 

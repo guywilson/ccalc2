@@ -217,6 +217,10 @@ class Function : public Operator {
             return isTokenFunction(token);
         }
 
+        static const string CLASS_NAME() {
+            return "Function";
+        }
+
         string evaluate() override {
             string answer;
 

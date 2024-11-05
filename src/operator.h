@@ -151,6 +151,10 @@ class Operator : public Token {
             return isTokenOperator(token);
         }
 
+        static const string CLASS_NAME() {
+            return "Operator";
+        }
+
         virtual const string className() override {
             return "Operator";
         }

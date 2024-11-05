@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
+#include "container.h"
 #include "token.h"
 
 using namespace std;
@@ -23,7 +24,7 @@ class Tokenizer {
     public:
         Tokenizer(const string & expression);
 
-        vector<Token *> tokenize();
+        TokenArray tokenize();
 };
 
 #endif

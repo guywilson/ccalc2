@@ -97,6 +97,10 @@ class Operand : public Token {
             return true;
         }
 
+        static const string CLASS_NAME() {
+            return "Operand";
+        }
+
         string toString(long precision) {
             char szOutputString[OUTPUT_MAX_STRING_LENGTH];
             char szFormatString[FORMAT_STRING_LENGTH];

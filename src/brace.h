@@ -41,6 +41,10 @@ class Brace : public Token {
             return isBrace(token[0]);
         }
 
+        static const string CLASS_NAME() {
+            return "Brace";
+        }
+
         bool isLeftBrace() {
             return isLeft;
         }
