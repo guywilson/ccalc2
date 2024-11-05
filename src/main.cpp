@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <stdint.h>
 #include <vector>
@@ -9,6 +10,7 @@
 #include <readline/history.h>
 
 #include "calc_error.h"
+#include "system.h"
 #include "tokenizer.h"
 #include "expression.h"
 #include "prompt.h"
@@ -100,17 +102,55 @@ static void printUsage(void) {
     // printf("\texit\tExit the calculator\n\n");
 }
 
+string getRadixCode(int radix) {
+    string code;
+
+    switch (radix) {
+        case DECIMAL:
+            code.assign("DEC");
+            break;
+
+        case HEXADECIMAL:
+            code.assign("HEX");
+            break;
+
+        case OCTAL:
+            code.assign("OCT");
+            break;
+
+        case BINARY:
+            code.assign("BIN");
+            break;
+    }
+
+    return code;
+}
+
+string getPromptString(int radix) {
+    stringstream s;
+
+    s << "calc [" << getRadixCode(radix) << "]> ";
+
+    return s.str();
+}
+
 int main(int argc, char ** argv) {
-    bool loop = true;
     long precision = DEFAULT_PRECISION;
 
     printBanner();
 
+    System & system = System::getInstance();
+    system.setRadix(DECIMAL);
+
     Prompt prompt;
-    prompt.setPrompt("calc > ");
+    string answer = "0.00";
+
+    bool loop = true;
 
     while (loop) {
 #ifndef DEBUG_CALCULATION
+        prompt.setPrompt(getPromptString(system.getRadix()));
+
         string response = prompt.read();
 #else
         string response = DEBUG_CALCULATION;
@@ -130,10 +170,53 @@ int main(int argc, char ** argv) {
             string p = response.substr(4);
             precision = strtol(p.c_str(), NULL, 10);
         }
+        else if (response.compare("dec") == 0) {
+            int oldRadix = system.getRadix();
+
+            if (oldRadix != DECIMAL) {
+                system.setRadix(DECIMAL);
+
+                Operand o(answer);
+                cout << "Last answer = " << o.toString(precision) << endl << endl;
+            }
+        }
+        else if (response.compare("hex") == 0) {
+            int oldRadix = system.getRadix();
+
+            if (oldRadix != HEXADECIMAL) {
+                system.setRadix(HEXADECIMAL);
+
+                Operand o(answer);
+                cout << "Last answer = " << o.toString(precision) << endl << endl;
+            }
+         }
+        else if (response.compare("oct") == 0) {
+            int oldRadix = system.getRadix();
+
+            if (oldRadix != OCTAL) {
+                system.setRadix(OCTAL);
+
+                Operand o(answer);
+                cout << "Last answer = " << o.toString(precision) << endl << endl;
+            }
+        }
+        else if (response.compare("bin") == 0) {
+            int oldRadix = system.getRadix();
+
+            if (oldRadix != BINARY) {
+                system.setRadix(BINARY);
+
+                Operand o(answer);
+                cout << "Last answer = " << o.toString(precision) << endl << endl;
+            }
+        }
         else {
             try {
                 Expression e(response);
-                cout << response << " = " << e.evaluate(precision) << endl << endl;
+
+                answer = e.evaluate(precision);
+
+                cout << response << " = " << answer << endl << endl;
             }
             catch (calc_error & e) {
                 cout << "Error: " << e.what() << endl << endl;
