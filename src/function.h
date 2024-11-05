@@ -84,6 +84,10 @@ static inline bool isTokenFunctionRad(const string & token) {
     return (token.compare("rad") == 0);
 }
 
+static inline bool isTokenFunctionNot(const string & token) {
+    return (token.compare("not") == 0);
+}
+
 static inline bool isTokenFunction(const string & token) {
     return (isTokenFunctionSin(token) ||
             isTokenFunctionCos(token) ||
@@ -102,7 +106,8 @@ static inline bool isTokenFunction(const string & token) {
             isTokenFunctionLn(token) ||
             isTokenFunctionFact(token) ||
             isTokenFunctionDeg(token) ||
-            isTokenFunctionRad(token));
+            isTokenFunctionRad(token) ||
+            isTokenFunctionNot(token));
 }
 
 class Function : public Operator {
@@ -126,6 +131,7 @@ class Function : public Operator {
             function_fact,
             function_deg,
             function_rad,
+            function_not,
             function_unkown
         };
 
@@ -187,6 +193,9 @@ class Function : public Operator {
             }
             else if (isTokenFunctionRad(token)) {
                 functionId = function_rad;
+            }
+            else if (isTokenFunctionNot(token)) {
+                functionId = function_not;
             }
             else {
                 functionId = function_unkown;
@@ -284,6 +293,10 @@ class Function : public Operator {
                 
                 case function_rad:
                     result = functionOperand.rad();
+                    break;
+                
+                case function_not:
+                    result = functionOperand.bitwise_not();
                     break;
 
                 default:

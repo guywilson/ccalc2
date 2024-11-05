@@ -253,6 +253,13 @@ class Operand : public Token {
             return result;
         }
 
+        const Operand bitwise_not() {
+            Operand result;
+            mpfr_set_ui(result.value, (~mpfr_get_ui(this->value, MPFR_RNDA)), MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
         const Operand deg() {
             Operand result;
 
