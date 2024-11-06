@@ -18,7 +18,7 @@
 
 using namespace std;
 
-// #define DEBUG_CALCULATION                   "15 || 2"
+// #define DEBUG_CALCULATION                   "3F + C"
 
 #define DEFAULT_PRECISION                   12
 
@@ -150,10 +150,10 @@ int main(int argc, char ** argv) {
     while (loop) {
 #ifndef DEBUG_CALCULATION
         prompt.setPrompt(getPromptString(system.getRadix()));
-
         string response = prompt.read();
 #else
         string response = DEBUG_CALCULATION;
+        system.setRadix(HEXADECIMAL);
         loop = false;
 #endif
 
@@ -213,7 +213,6 @@ int main(int argc, char ** argv) {
         else {
             try {
                 Expression e(response);
-
                 answer = e.evaluate(precision);
 
                 cout << response << " = " << answer << endl << endl;

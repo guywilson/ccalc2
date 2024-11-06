@@ -22,6 +22,34 @@ using namespace std;
 
 #define BASE2_OUTPUT_LEN               (sizeof(uint32_t) * 8)
 
+static inline bool isDigit(char ch, int radix) {
+    bool is_digit = false;
+
+    switch (radix) {
+        case DECIMAL:
+            is_digit = isdigit(ch);
+            break;
+
+        case HEXADECIMAL:
+            is_digit = isxdigit(ch);
+            break;
+
+        case OCTAL:
+            is_digit = (ch >= '0' && ch < '8');
+            break;
+
+        case BINARY:
+            is_digit = (ch == '0' || ch == '1');
+            break;
+    }
+
+    return is_digit;
+}
+
+static inline bool isOperandChar(char ch, int radix) {
+    return (isDigit(ch, radix) || ch == '-' || ch == '.');
+}
+
 class Operand : public Token {
     private:
         int radix;
@@ -66,7 +94,7 @@ class Operand : public Token {
 
         Operand(const string & token) : Token(token) {
             initialiseValue();
-            mpfr_strtofr(value, token.c_str(), NULL, 10, MPFR_RNDA);
+            mpfr_strtofr(value, token.c_str(), NULL, radix, MPFR_RNDA);
         }
 
         Operand(mpfr_t src) {
@@ -79,10 +107,12 @@ class Operand : public Token {
         }
 
         static bool isOperand(const string & token) {
+            System & system = System::getInstance();
+
             for (int i = 0;i < token.length();i++) {
                 char ch = token[i];
 
-                if (!isdigit(ch) && !isxdigit(ch) && ch != '-' && ch != '.') {
+                if (!isOperandChar(ch, system.getRadix())) {
                     return false;
                 }
             }
