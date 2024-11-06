@@ -48,6 +48,14 @@ static inline bool isTokenXOR(const string & token) {
     return (token.compare("~") == 0);
 }
 
+static inline bool isTokenLShift(const string & token) {
+    return (token.compare("<") == 0);
+}
+
+static inline bool isTokenRShift(const string & token) {
+    return (token.compare(">") == 0);
+}
+
 static inline bool isTokenOperator(const string & token) {
     return (isTokenPlus(token) ||
             isTokenMinus(token) ||
@@ -57,7 +65,9 @@ static inline bool isTokenOperator(const string & token) {
             isTokenPower(token) ||
             isTokenAND(token) ||
             isTokenOR(token) ||
-            isTokenXOR(token));
+            isTokenXOR(token) ||
+            isTokenLShift(token) ||
+            isTokenRShift(token));
 }
 
 class Operator : public Token {
@@ -78,6 +88,8 @@ class Operator : public Token {
             operator_and,
             operator_or,
             operator_xor,
+            operator_lshift,
+            operator_rshift,
             operator_unkown
         };
 
@@ -139,6 +151,16 @@ class Operator : public Token {
                 opType = operator_xor;
                 opPrescedence = 4;
                 opAssociativity = aLeft;
+            }
+            else if (isTokenLShift(token)) {
+                opType = operator_lshift;
+                opPrescedence = 4;
+                opAssociativity = aRight;
+            }
+            else if (isTokenRShift(token)) {
+                opType = operator_rshift;
+                opPrescedence = 4;
+                opAssociativity = aRight;
             }
             else {
                 opType = operator_unkown;
@@ -217,7 +239,15 @@ class Operator : public Token {
                     break;
 
                 case operator_xor:
-                    result = lhs || rhs;
+                    result = lhs.bitwise_xor(rhs);
+                    break;
+
+                case operator_lshift:
+                    result = lhs << rhs;
+                    break;
+
+                case operator_rshift:
+                    result = lhs >> rhs;
                     break;
 
                 default:
