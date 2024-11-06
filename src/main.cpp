@@ -43,7 +43,7 @@ static void printBanner(void) {
     time_t t = tv.tv_sec;
     struct tm * localTime = localtime(&t);
 
-    int year = localTime->tm_year;
+    int year = localTime->tm_year + 1900;
 
 	cout << endl << "*** Welcome to CCALC v" << getVersion() << " ***" << endl << endl;
     cout << "A cmd line scientific calculator. Copyright © Guy Wilson " << year << endl;
