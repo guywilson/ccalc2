@@ -3,6 +3,8 @@
 #include <string>
 #include <stdint.h>
 #include <vector>
+#include <time.h>
+#include <sys/time.h>
 
 #include <gmp.h>
 #include <mpfr.h>
@@ -35,10 +37,13 @@ static void printVersion(void) {
 }
 
 static void printBanner(void) {
-    int         year = 2024;
+    struct timeval tv;
 
-    // tmUpdate();
-    // year = tmGetYear();
+    gettimeofday(&tv, NULL);
+    time_t t = tv.tv_sec;
+    struct tm * localTime = localtime(&t);
+
+    int year = localTime->tm_year;
 
 	cout << endl << "*** Welcome to CCALC v" << getVersion() << " ***" << endl << endl;
     cout << "A cmd line scientific calculator. Copyright © Guy Wilson " << year << endl;
@@ -51,58 +56,44 @@ static void printUsage(void) {
 
     cout << "Operators supported:" << endl;
     cout << "\t+, -, *, /, %% (Modulo)" << endl;
-    // printf("\t& (AND), | (OR), ~ (XOR)\n");
-    // printf("\t< (left shift), > (right shift)\n");
-    // printf("\t^ (power, e.g. x to the power of y)\n");
-    // printf("\t: (root, e.g. x : y - the yth root of x)\n\n");
-    // printf("\tNesting is achieved with braces ()\n\n");
-    // printf("Functions supported:\n");
-    // printf("\tsin(x)\treturn the sine of the angle x degrees\n");
-    // printf("\tcos(x)\treturn the cosine of the angle x degrees\n");
-    // printf("\ttan(x)\treturn the tangent of the angle x degrees\n");
-    // printf("\tasin(x)\treturn the angle in degrees of arcsine(x)\n");
-    // printf("\tacos(x)\treturn the angle in degrees of arccosine(x)\n");
-    // printf("\tatan(x)\treturn the angle in degrees of arctangent(x)\n");
-    // printf("\tsinh(x)\treturn the hyperbolic sine of the angle x radians\n");
-    // printf("\tcosh(x)\treturn the hyperbolic cosine of the angle x radians\n");
-    // printf("\ttanh(x)\treturn the hyperbolic tangent of the angle x radians\n");
-    // printf("\tasinh(x) return the inverse hyperbolic sine of angle x in radians\n");
-    // printf("\tacosh(x) return the inverse hyperbolic cosine of angle x in radians\n");
-    // printf("\tatanh(x) return the inverse hyperbolic tangent of angle x in radians\n");
-    // printf("\tsqrt(x)\treturn the square root of x\n");
-    // printf("\tlog(x)\treturn the log of x\n");
-    // printf("\tln(x)\treturn the natural log of x\n");
-    // printf("\tfact(x)\treturn the factorial of x\n");
-    // printf("\trad(x)\tthe value in radians of x degrees\n");
-    // printf("\tdeg(x)\tthe value in degrees of x radians\n");
-    // printf("\tmem(n)\tthe value in memory location n, where n is 0 - 9\n\n");
-    // printf("Constants supported:\n");
-    // printf("\tpi\tthe ratio pi\n");
-    // printf("\teu\tEulers constant\n");
-    // printf("\tg\tThe gravitational constant G\n");
-    // printf("\tc\tthe speed of light in a vacuum\n\n");
-    // printf("Commands supported:\n");
-    // printf("\tmemstn\tStore the last result in memory location n (0 - 9)\n");
-    // printf("\tmemclrn\tClear the memory location n (0 - 9)\n");
-    // printf("\tclrall\tClear all memory locations\n");
-    // printf("\tlistall\tList all memory locations\n");
-    // printf("\tdec\tSwitch to decimal mode\n");
-    // printf("\thex\tSwitch to hexadecimal mode\n");
-    // printf("\tbin\tSwitch to binary mode\n");
-    // printf("\toct\tSwitch to octal mode\n");
-    // printf("\tstat\tSwitch to statistical mode\n");
-    // printf("\tsum\tStatistical sum function\n");
-    // printf("\tavg\tStatistical average function\n");
-    // printf("\tmin\tStatistical minimum function\n");
-    // printf("\tmax\tStatistical maximum function\n");
-    // printf("\tclrstat\tClear the statistic buffer of all values\n");
-    // printf("\tsetpn\tSet the precision to n\n");
-    // printf("\tfmton\tTurn on output formatting (on by default)\n");
-    // printf("\tfmtoff\tTurn off output formatting\n");
-    // printf("\thelp\tThis help text\n");
-    // printf("\ttest\tRun a self test of the calculator\n");
-    // printf("\tversion\tPrint the calculator version\n");
-    // printf("\texit\tExit the calculator\n\n");
+    cout << "\t& (AND), | (OR), ~ (XOR)" << endl;
+    cout << "\t< (left shift), > (right shift)" << endl;
+    cout << "\t^ (power, e.g. x to the power of y)" << endl;
+    // cout << "\t: (root, e.g. x : y - the yth root of x)" << endl << endl;
+    cout << "\tNesting is achieved with braces ()" << endl << endl;
+    cout << "Functions supported:" << endl;
+    cout << "\tsin(x)\treturn the sine of the angle x degrees" << endl;
+    cout << "\tcos(x)\treturn the cosine of the angle x degrees" << endl;
+    cout << "\ttan(x)\treturn the tangent of the angle x degrees" << endl;
+    cout << "\tasin(x)\treturn the angle in degrees of arcsine(x)" << endl;
+    cout << "\tacos(x)\treturn the angle in degrees of arccosine(x)" << endl;
+    cout << "\tatan(x)\treturn the angle in degrees of arctangent(x)" << endl;
+    cout << "\tsinh(x)\treturn the hyperbolic sine of the angle x radians" << endl;
+    cout << "\tcosh(x)\treturn the hyperbolic cosine of the angle x radians" << endl;
+    cout << "\ttanh(x)\treturn the hyperbolic tangent of the angle x radians" << endl;
+    cout << "\tasinh(x) return the inverse hyperbolic sine of angle x in radians" << endl;
+    cout << "\tacosh(x) return the inverse hyperbolic cosine of angle x in radians" << endl;
+    cout << "\tatanh(x) return the inverse hyperbolic tangent of angle x in radians" << endl;
+    cout << "\tsqrt(x)\treturn the square root of x" << endl;
+    cout << "\tlog(x)\treturn the log of x" << endl;
+    cout << "\tln(x)\treturn the natural log of x" << endl;
+    cout << "\tfact(x)\treturn the factorial of x" << endl;
+    cout << "\trad(x)\tthe value in radians of x degrees" << endl;
+    cout << "\tdeg(x)\tthe value in degrees of x radians" << endl;
+    cout << "Constants supported:" << endl;
+    cout << "\tpi\tthe ratio pi" << endl;
+    cout << "\teu\tEulers constant" << endl;
+    cout << "\tc\tthe speed of light in a vacuum" << endl << endl;
+    cout << "Commands supported:" << endl;
+    cout << "\tdec\tSwitch to decimal mode" << endl;
+    cout << "\thex\tSwitch to hexadecimal mode" << endl;
+    cout << "\tbin\tSwitch to binary mode" << endl;
+    cout << "\toct\tSwitch to octal mode" << endl;
+    cout << "\tsetpn\tSet the precision to n" << endl;
+    cout << "\thelp\tThis help text" << endl;
+    cout << "\ttest\tRun a self test of the calculator" << endl;
+    cout << "\tversion\tPrint the calculator version" << endl;
+    cout << "\texit\tExit the calculator" << endl << endl;
 }
 
 string getRadixCode(int radix) {
@@ -286,6 +277,6 @@ void test() {
     }
 
     system.setRadix(originalRadix);
-    
+
     cout << "Total tests ran: " << numTests << ", passed: " << numPassed << ", failed: " << numFailed << endl << endl;
 }
