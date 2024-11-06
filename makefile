@@ -7,8 +7,8 @@
 ###############################################################################
 
 # Version number for CCALC
-MAJOR_VERSION = 0
-MINOR_VERSION = 1
+MAJOR_VERSION = 1
+MINOR_VERSION = 0
 
 # Directories
 SOURCE = src
@@ -16,7 +16,7 @@ BUILD = build
 DEP = dep
 
 # What is our target
-TARGET = ccalc2
+TARGET = ccalc
 
 # Tools
 VBUILD = vbuild
@@ -37,8 +37,8 @@ CPPFLAGS_BASE = -c -Wall -pedantic -std=c++20
 CPPFLAGS_REL=$(CPPFLAGS_BASE) -O2
 CPPFLAGS_DBG=$(CPPFLAGS_BASE) -g
 
-CPPFLAGS=$(CPPFLAGS_DBG)
-CFLAGS=$(CFLAGS_DBG)
+CPPFLAGS=$(CPPFLAGS_REL)
+CFLAGS=$(CFLAGS_REL)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP)/$*.Td
 
 # Libraries

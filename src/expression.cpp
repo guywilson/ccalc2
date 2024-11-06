@@ -61,6 +61,9 @@ TokenQueue Expression::getRPNQueue(TokenArray & tokens) {
                 {
                     tokenQueue.put(operatorStack.pop());
                 }
+                else {
+                    break;
+                }
             }
 
             operatorStack.push(token);
@@ -133,7 +136,7 @@ TokenQueue Expression::getRPNQueue(TokenArray & tokens) {
     return tokenQueue;
 }
 
-string Expression::evaluate(long precision) {
+string Expression::evaluate(const string & expression) {
     Tokenizer tokenizer(expression);
 
     TokenArray tokens = tokenizer.tokenize();

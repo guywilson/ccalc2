@@ -12,16 +12,16 @@ using namespace std;
 
 class Expression {
     private:
-        string expression;
+        long precision;
 
         TokenQueue getRPNQueue(TokenArray & tokens);
 
     public:
-        Expression(const string & expression) {
-            this->expression = expression;
+        Expression(long precision) {
+            this->precision = precision;
         }
 
-        string evaluate(long precision);
+        string evaluate(const string & expression);
 };
 
 #endif

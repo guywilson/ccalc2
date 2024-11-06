@@ -15,12 +15,15 @@
 #include "expression.h"
 #include "prompt.h"
 #include "version.h"
+#include "test.h"
 
 using namespace std;
 
-// #define DEBUG_CALCULATION                   "3F + C"
+// #define DEBUG_CALCULATION                   "2 + (3 * 4) ^ 2 - 13"
 
 #define DEFAULT_PRECISION                   12
+
+void test();
 
 const char * pszWarranty = 
     "This program comes with ABSOLUTELY NO WARRANTY.\n" \
@@ -153,7 +156,6 @@ int main(int argc, char ** argv) {
         string response = prompt.read();
 #else
         string response = DEBUG_CALCULATION;
-        system.setRadix(HEXADECIMAL);
         loop = false;
 #endif
 
@@ -169,6 +171,9 @@ int main(int argc, char ** argv) {
         else if (response.find("setp", 0) == 0) {
             string p = response.substr(4);
             precision = strtol(p.c_str(), NULL, 10);
+        }
+        else if (response.compare("test") == 0) {
+            test();
         }
         else if (response.compare("dec") == 0) {
             int oldRadix = system.getRadix();
@@ -212,8 +217,8 @@ int main(int argc, char ** argv) {
         }
         else {
             try {
-                Expression e(response);
-                answer = e.evaluate(precision);
+                Expression e(precision);
+                answer = e.evaluate(response);
 
                 cout << response << " = " << answer << endl << endl;
             }
@@ -224,4 +229,63 @@ int main(int argc, char ** argv) {
     }
 
     return 0;
+}
+
+void test() {
+    const int testPrecision = 6;
+
+    TestFramework t;
+
+    t.addTest("2 + (3 * 4) ^ 2 - 13",                           "133.000000",   DECIMAL);
+    t.addTest("2+(3*4)^2-13",                                   "133.000000",   DECIMAL);
+    t.addTest("12 - ((2 * 3) - (8 / 2) / 0.5) / 12.653",        "12.158065",    DECIMAL);
+    t.addTest("2 ^ 16 - 1",                                     "65535.000000", DECIMAL);
+    t.addTest("(((((((1 + 2 * 3)-2)*4)/2)-12)+261)/12) - 5.25", "16.333333",    DECIMAL);
+    t.addTest("pi + sin(45 + 45)",                              "4.141593",     DECIMAL);
+    t.addTest("pi * (2 ^ 2)",                                   "12.566371",    DECIMAL);
+    t.addTest("84 * -15 + sin(47)",                             "-1259.268646", DECIMAL);
+    t.addTest("16 / (3 - 5 + 8) * (3 + 5 - 4)",                 "10.666667",    DECIMAL);
+    t.addTest("sin(90) * cos(45) * tan(180) + asin(1) + acos(0) + atan(25)",    "267.709390",    DECIMAL);
+    t.addTest("asin(sin(90)) + acos(cos(90))",                  "180.000000",   DECIMAL);
+    t.addTest("fact(12) + 13",                                  "479001613.000000", DECIMAL);
+    t.addTest("sin(45 + 45) + pi",                              "4.141593",     DECIMAL);
+    t.addTest("-232 * 647.19",                                  "-150148.080000", DECIMAL);
+    t.addTest("2 ^ 32 - 1",                                     "4294967295.000000",DECIMAL);
+    t.addTest("sin(90)-1",                                      "0.000000",     DECIMAL);
+    t.addTest("(F100 < 3) + (AA > 1)",                          "0000000000078855", HEXADECIMAL);
+    t.addTest("10101010 | 1010101",                             "11111111",     BINARY);
+    t.addTest("(1 < 111) | (1 < 110)",                          "11000000",     BINARY);
+
+    int numTests = t.numTests();
+    int numPassed = 0;
+    int numFailed = 0;
+
+    System & system = System::getInstance();
+
+    int originalRadix = system.getRadix();
+    
+    Expression expression(testPrecision);
+
+    for (int i = 0;i < numTests;i++) {
+        string testExpression = t.getTestExpression(i);
+
+        system.setRadix(t.getRadix(i));
+
+        cout << "Testing: '" << testExpression << "'..." << endl;
+
+        string actualResult = expression.evaluate(testExpression);
+
+        if (t.assertTest(i, actualResult)) {
+            cout << "    Test passed :)" << endl << endl;
+            numPassed++;
+        }
+        else {
+            cout << "    Test failed :(" << endl << endl; 
+            numFailed++;
+        }
+    }
+
+    system.setRadix(originalRadix);
+    
+    cout << "Total tests ran: " << numTests << ", passed: " << numPassed << ", failed: " << numFailed << endl << endl;
 }
