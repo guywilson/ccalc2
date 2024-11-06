@@ -23,7 +23,7 @@ using namespace std;
 
 // #define DEBUG_CALCULATION                   "2 + (3 * 4) ^ 2 - 13"
 
-#define DEFAULT_PRECISION                   12
+#define DEFAULT_PRECISION                   2
 
 void test();
 
@@ -162,6 +162,11 @@ int main(int argc, char ** argv) {
         else if (response.find("setp", 0) == 0) {
             string p = response.substr(4);
             precision = strtol(p.c_str(), NULL, 10);
+
+            if (precision < 0L || precision > 80) {
+                cout << "Invalid precision, must be between 0 and 80" << endl;
+                precision = DEFAULT_PRECISION;
+            }
         }
         else if (response.compare("test") == 0) {
             test();
