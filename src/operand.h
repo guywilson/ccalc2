@@ -294,6 +294,13 @@ class Operand : public Token {
             return result;
         }
 
+        const Operand root(const Operand & rhs) {
+            Operand result;
+            mpfr_rootn_ui(result.value, this->value, mpfr_get_ui(rhs.value, MPFR_RNDA), MPFR_RNDA);
+            result.setToken(result.toString(INTERMEDIATE_PRECISION));
+            return result;
+        }
+
         const Operand deg() {
             Operand result;
 

@@ -59,7 +59,7 @@ static void printUsage(void) {
     cout << "\t& (AND), | (OR), ~ (XOR)" << endl;
     cout << "\t< (left shift), > (right shift)" << endl;
     cout << "\t^ (power, e.g. x to the power of y)" << endl;
-    // cout << "\t: (root, e.g. x : y - the yth root of x)" << endl << endl;
+    cout << "\t: (root, e.g. x : y - the yth root of x)" << endl << endl;
     cout << "\tNesting is achieved with braces ()" << endl << endl;
     cout << "Functions supported:" << endl;
     cout << "\tsin(x)\treturn the sine of the angle x degrees" << endl;

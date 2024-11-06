@@ -36,6 +36,10 @@ static inline bool isTokenPower(const string & token) {
     return (token.compare("^") == 0);
 }
 
+static inline bool isTokenRoot(const string & token) {
+    return (token.compare(":") == 0);
+}
+
 static inline bool isTokenAND(const string & token) {
     return (token.compare("&") == 0);
 }
@@ -63,6 +67,7 @@ static inline bool isTokenOperator(const string & token) {
             isTokenDivide(token) ||
             isTokenMod(token) ||
             isTokenPower(token) ||
+            isTokenRoot(token) ||
             isTokenAND(token) ||
             isTokenOR(token) ||
             isTokenXOR(token) ||
@@ -85,6 +90,7 @@ class Operator : public Token {
             operator_divide,
             operator_mod,
             operator_power,
+            operator_root,
             operator_and,
             operator_or,
             operator_xor,
@@ -136,6 +142,11 @@ class Operator : public Token {
                 opType = operator_power;
                 opPrescedence = 4;
                 opAssociativity = aRight;
+            }
+            else if (isTokenRoot(token)) {
+                opType = operator_root;
+                opPrescedence = 4;
+                opAssociativity = aLeft;
             }
             else if (isTokenAND(token)) {
                 opType = operator_and;
@@ -228,6 +239,10 @@ class Operator : public Token {
 
                 case operator_power:
                     result = lhs ^ rhs;
+                    break;
+
+                case operator_root:
+                    result = lhs.root(rhs);
                     break;
 
                 case operator_and:
