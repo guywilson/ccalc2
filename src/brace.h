@@ -21,8 +21,12 @@ class Brace : public Token {
             }
         }
 
-        virtual const string className() override {
+        static const string CLASS_NAME() {
             return "Brace";
+        }
+
+        virtual const string className() override {
+            return Brace::CLASS_NAME();
         }
 
         static bool isLeftBrace(char ch) {
@@ -39,10 +43,6 @@ class Brace : public Token {
 
         static bool isBrace(const string & token) {
             return isBrace(token[0]);
-        }
-
-        static const string CLASS_NAME() {
-            return "Brace";
         }
 
         bool isLeftBrace() {

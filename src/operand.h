@@ -120,10 +120,6 @@ class Operand : public Token {
             return true;
         }
 
-        static const string CLASS_NAME() {
-            return "Operand";
-        }
-
         string toString(long precision) {
             char szOutputString[OUTPUT_MAX_STRING_LENGTH];
             char szFormatString[FORMAT_STRING_LENGTH];
@@ -164,8 +160,12 @@ class Operand : public Token {
             return toString(INTERMEDIATE_PRECISION);
         }
 
-        virtual const string className() override {
+        static const string CLASS_NAME() {
             return "Operand";
+        }
+
+        virtual const string className() override {
+            return Operand::CLASS_NAME();
         }
 
         const Operand sin() {

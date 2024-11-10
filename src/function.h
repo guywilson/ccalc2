@@ -205,8 +205,12 @@ class Function : public Operator {
             opPrescedence = 5;
         }
 
-        const string className() override {
+        static const string CLASS_NAME() {
             return "Function";
+        }
+
+        const string className() override {
+            return Function::CLASS_NAME();
         }
 
         void setOperand(Operand & o) {
@@ -215,10 +219,6 @@ class Function : public Operator {
 
         static bool isFunction(const string & token) {
             return isTokenFunction(token);
-        }
-
-        static const string CLASS_NAME() {
-            return "Function";
         }
 
         string evaluate() override {

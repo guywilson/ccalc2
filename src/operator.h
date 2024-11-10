@@ -189,7 +189,7 @@ class Operator : public Token {
         }
 
         virtual const string className() override {
-            return "Operator";
+            return Operator::CLASS_NAME();
         }
 
         int getPrescedence() {
