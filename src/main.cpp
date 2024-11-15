@@ -212,14 +212,16 @@ int main(int argc, char ** argv) {
             }
         }
         else {
-            try {
-                Expression e(precision);
-                answer = e.evaluate(response);
+            if (response.length() > 0) {
+                try {
+                    Expression e(precision);
+                    answer = e.evaluate(response);
 
-                cout << response << " = " << answer << endl << endl;
-            }
-            catch (calc_error & e) {
-                cout << "Error: " << e.what() << endl << endl;
+                    cout << response << " = " << answer << endl << endl;
+                }
+                catch (calc_error & e) {
+                    cout << "Error: " << e.what() << endl << endl;
+                }
             }
         }
     }
