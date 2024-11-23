@@ -250,7 +250,7 @@ int main(int argc, char ** argv) {
                     Expression e(precision);
                     answer = e.evaluate(response);
 
-                    if (isFormattingOn) {
+                    if (isFormattingOn && system.getRadix() == DECIMAL) {
                         cout << response << " = " << addThousandsSeparators(answer) << endl << endl;
                     }
                     else {
