@@ -92,6 +92,8 @@ static void printUsage(void) {
     cout << "\tbin\tSwitch to binary mode" << endl;
     cout << "\toct\tSwitch to octal mode" << endl;
     cout << "\tsetpn\tSet the precision to n" << endl;
+    cout << "\tfmton\tSwitch on output formatting (on by default)" << endl;
+    cout << "\tfmtoff\tSwitch off output formatting" << endl;
     cout << "\thelp\tThis help text" << endl;
     cout << "\ttest\tRun a self test of the calculator" << endl;
     cout << "\tversion\tPrint the calculator version" << endl;
