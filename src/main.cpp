@@ -210,7 +210,7 @@ int main(int argc, char ** argv) {
             if (oldRadix != DECIMAL) {
                 system.setRadix(DECIMAL);
 
-                Operand o(answer);
+                Operand o(answer, oldRadix);
                 cout << "Last answer = " << o.toString(precision) << endl << endl;
             }
         }
@@ -220,7 +220,7 @@ int main(int argc, char ** argv) {
             if (oldRadix != HEXADECIMAL) {
                 system.setRadix(HEXADECIMAL);
 
-                Operand o(answer);
+                Operand o(answer, oldRadix);
                 cout << "Last answer = " << o.toString(precision) << endl << endl;
             }
          }
@@ -230,7 +230,7 @@ int main(int argc, char ** argv) {
             if (oldRadix != OCTAL) {
                 system.setRadix(OCTAL);
 
-                Operand o(answer);
+                Operand o(answer, oldRadix);
                 cout << "Last answer = " << o.toString(precision) << endl << endl;
             }
         }
@@ -240,7 +240,7 @@ int main(int argc, char ** argv) {
             if (oldRadix != BINARY) {
                 system.setRadix(BINARY);
 
-                Operand o(answer);
+                Operand o(answer, oldRadix);
                 cout << "Last answer = " << o.toString(precision) << endl << endl;
             }
         }

@@ -52,13 +52,8 @@ static inline bool isOperandChar(char ch, int radix) {
 
 class Operand : public Token {
     private:
-        int radix;
-
         void initialiseValue() {
-            System & system = System::getInstance();
-
             mpfr_init2(value, MPFR_BASE_PRECISION);
-            radix = system.getRadix();
         }
 
         string toBase2() {
@@ -92,7 +87,7 @@ class Operand : public Token {
             initialiseValue();
         }
 
-        Operand(const string & token) : Token(token) {
+        Operand(const string & token, int radix = DECIMAL) : Token(token) {
             initialiseValue();
             mpfr_strtofr(value, token.c_str(), NULL, radix, MPFR_RNDA);
         }
@@ -125,7 +120,9 @@ class Operand : public Token {
             char szFormatString[FORMAT_STRING_LENGTH];
             string output;
 
-            switch (radix) {
+            System & system = System::getInstance();
+
+            switch (system.getRadix()) {
                 case DECIMAL:
                     snprintf(szFormatString, FORMAT_STRING_LENGTH, "%%.%ldRf", precision);
                     mpfr_snprintf(szOutputString, OUTPUT_MAX_STRING_LENGTH, szFormatString, value);
