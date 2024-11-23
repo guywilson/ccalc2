@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+#include <locale>
 #include <string>
 #include <stdint.h>
 #include <vector>
@@ -128,6 +130,28 @@ string getPromptString(int radix) {
     return s.str();
 }
 
+string addThousandsSeparators(const string & input) {
+    try {
+        string bitAfterDecimalPoint = input.substr(input.find_first_of('.') + 1);
+
+        long long number = stoll(input);
+
+        // Create a stringstream with a custom locale for thousands separators
+        stringstream ss;
+        ss.imbue(locale(locale::classic(), new ThousandsSeparator));
+        ss << number;
+
+        // Return the formatted string
+        return ss.str() + '.' + bitAfterDecimalPoint;
+    }
+    catch (const invalid_argument &) {
+        return "Invalid input"; // Handle conversion errors gracefully
+    }
+    catch (const out_of_range &) {
+        return "Number out of range"; // Handle range errors gracefully
+    }
+}
+
 int main(int argc, char ** argv) {
     long precision = DEFAULT_PRECISION;
 
@@ -139,6 +163,7 @@ int main(int argc, char ** argv) {
     Prompt prompt;
     string answer = "0.00";
 
+    bool isFormattingOn = true;
     bool loop = true;
 
     while (loop) {
@@ -167,6 +192,12 @@ int main(int argc, char ** argv) {
                 cout << "Invalid precision, must be between 0 and 80" << endl;
                 precision = DEFAULT_PRECISION;
             }
+        }
+        else if (response.compare("fmton") == 0) {
+            isFormattingOn = true;
+        }
+        else if (response.compare("fmtoff") == 0) {
+            isFormattingOn = false;
         }
         else if (response.compare("test") == 0) {
             test();
@@ -217,7 +248,12 @@ int main(int argc, char ** argv) {
                     Expression e(precision);
                     answer = e.evaluate(response);
 
-                    cout << response << " = " << answer << endl << endl;
+                    if (isFormattingOn) {
+                        cout << response << " = " << addThousandsSeparators(answer) << endl << endl;
+                    }
+                    else {
+                        cout << response << " = " << answer << endl << endl;
+                    }
                 }
                 catch (calc_error & e) {
                     cout << "Error: " << e.what() << endl << endl;
