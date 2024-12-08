@@ -251,10 +251,10 @@ int main(int argc, char ** argv) {
                     answer = e.evaluate(response);
 
                     if (isFormattingOn && system.getRadix() == DECIMAL) {
-                        cout << response << " = " << addThousandsSeparators(answer) << endl << endl;
+                        cout << "\t" << response << " = " << addThousandsSeparators(answer) << endl << endl;
                     }
                     else {
-                        cout << response << " = " << answer << endl << endl;
+                        cout << "\t" << response << " = " << answer << endl << endl;
                     }
                 }
                 catch (calc_error & e) {
