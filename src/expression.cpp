@@ -137,6 +137,9 @@ TokenQueue Expression::getRPNQueue(TokenArray & tokens) {
 }
 
 string Expression::evaluate(const string & expression) {
+    System & system = System::getInstance();
+    int radix = system.getRadix();
+
     Tokenizer tokenizer(expression);
 
     TokenArray tokens = tokenizer.tokenize();
@@ -161,7 +164,7 @@ string Expression::evaluate(const string & expression) {
             o1->clear();
             delete o1;
 
-            Operand * result = new Operand(r);
+            Operand * result = new Operand(r, radix);
             tokenStack.push(result);
         }
         else if (isOperator(t)) {
@@ -179,7 +182,7 @@ string Expression::evaluate(const string & expression) {
             o2->clear();
             delete o2;
 
-            Operand * result = new Operand(r);
+            Operand * result = new Operand(r, radix);
             tokenStack.push(result);
         }
     }

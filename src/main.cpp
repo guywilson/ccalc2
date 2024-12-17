@@ -312,11 +312,11 @@ void test() {
         string actualResult = expression.evaluate(testExpression);
 
         if (t.assertTest(i, actualResult)) {
-            cout << "    Test passed :)" << endl << endl;
+            cout << "    Test passed :) - expected: [" << t.getExpectedResult(i) << "], actual: [" << actualResult << "]" << endl << endl;
             numPassed++;
         }
         else {
-            cout << "    Test failed :(" << endl << endl; 
+            cout << "    Test failed :( - expected: [" << t.getExpectedResult(i) << "], actual: [" << actualResult << "]" << endl << endl; 
             numFailed++;
         }
     }

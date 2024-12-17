@@ -144,12 +144,6 @@ class Operand : public Token {
                     break;
             }
 
-            // lgLogDebug(
-            //     "Output string = '%s', radix = %d, precision = %ld", 
-            //     outputStr.c_str(), 
-            //     radix, 
-            //     getPrecision());
-
             return output;
         }
 

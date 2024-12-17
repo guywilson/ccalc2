@@ -43,6 +43,10 @@ class TestFramework {
             return tests[i]->expression;
         }
 
+        string getExpectedResult(int i) {
+            return tests[i]->expectedResult;
+        }
+
         int getRadix(int i) {
             return tests[i]->radix;
         } 

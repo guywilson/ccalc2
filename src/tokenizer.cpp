@@ -125,6 +125,9 @@ Tokenizer::Tokenizer(const string & expression) {
 }
 
 TokenArray Tokenizer::tokenize() {
+    System & system = System::getInstance();
+    int radix = system.getRadix();
+
     TokenArray tokens;
 
     int pos = findNextTokenPos();
@@ -146,7 +149,7 @@ TokenArray Tokenizer::tokenize() {
                 tokens.add(t);
             }
             else if (Operand::isOperand(token)) {
-                Operand * t = new Operand(token);
+                Operand * t = new Operand(token, radix);
                 tokens.add(t);
             }
             else if (Constant::isConstant(token)) {
