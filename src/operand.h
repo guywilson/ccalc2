@@ -1,6 +1,7 @@
 #include <string>
 
 #include <ctype.h>
+#include <stdint.h>
 
 #include <gmp.h>
 #include <mpfr.h>
