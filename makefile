@@ -43,7 +43,7 @@ DEPFLAGS = -MT $@ -MMD -MP -MF $(DEP)/$*.Td
 
 # Libraries
 STDLIBS = 
-EXTLIBS = -lreadline -lmpfr -lgmp
+EXTLIBS = -lreadline -lhistory -lcurses -lmpfr -lgmp
 
 COMPILE.cpp = $(CPP) $(CPPFLAGS) $(DEPFLAGS) -o $@
 COMPILE.c = $(C) $(CFLAGS) $(DEPFLAGS) -o $@

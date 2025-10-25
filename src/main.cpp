@@ -132,26 +132,79 @@ string getPromptString(int radix) {
     return s.str();
 }
 
-string addThousandsSeparators(const string & input) {
-    try {
-        string bitAfterDecimalPoint = input.substr(input.find_first_of('.') + 1);
-
-        long long number = stoll(input);
-
-        // Create a stringstream with a custom locale for thousands separators
-        stringstream ss;
-        ss.imbue(locale(locale::classic(), new ThousandsSeparator));
-        ss << number;
-
-        // Return the formatted string
-        return ss.str() + '.' + bitAfterDecimalPoint;
+/*
+** Inserts thousands separators into the integer part of a decimal string.
+** - Keeps an optional leading + / -
+** - Preserves fractional part and any scientific exponent (e.g. "e+42")
+** - Works for arbitrarily long strings (>> 2^64)
+*/
+static string addThousandsSeparators(const string & input, char sep = ',') {
+    /*
+    ** 1) Split off sign.
+    */
+    string sign;
+    size_t pos = 0;
+    if (input[pos] == '+' || input[pos] == '-') {
+        sign.assign(1, input[pos]);
+        ++pos;
     }
-    catch (const invalid_argument &) {
-        return "Invalid input"; // Handle conversion errors gracefully
+
+    /*
+    ** 2) Split mantissa and exponent (e/E …). We keep the exponent untouched.
+    */
+    size_t exp_pos = input.find_first_of("eE", pos);
+    string mantissa = 
+            (exp_pos == string::npos) ? 
+                input.substr(pos) : 
+                input.substr(pos, exp_pos - pos);
+
+    string exponent = 
+            (exp_pos == string::npos) ? 
+                string() : 
+                input.substr(exp_pos); // includes the 'e' or 'E' and whatever follows
+
+    /*
+    ** 3) Split integer and fractional parts of the mantissa.
+    */
+    size_t dot_pos = mantissa.find('.');
+    string int_part = 
+            (dot_pos == string::npos) ? 
+                mantissa : 
+                mantissa.substr(0, dot_pos);
+
+    string frac_part = 
+            (dot_pos == std::string::npos) ? 
+            string() : 
+            mantissa.substr(dot_pos); // keep decimal point + fraction as-is
+
+    /*
+    ** 4) Insert separators into the integer part, grouping from the right.
+    */
+    const size_t n = int_part.size();
+    if (n <= 3) {
+        // No grouping needed.
+        return sign + int_part + frac_part + exponent;
     }
-    catch (const out_of_range &) {
-        return "Number out of range"; // Handle range errors gracefully
+
+    string grouped;
+    grouped.reserve(n + n / 3);
+
+    size_t first_group = n % 3;
+    if (first_group == 0) {
+        first_group = 3;
     }
+
+    grouped.append(int_part.data(), first_group);
+    
+    for (size_t i = first_group; i < n; i += 3) {
+        grouped.push_back(sep);
+        grouped.append(int_part, i, 3);
+    }
+
+    /*
+    ** 5) Reassemble and return.
+    */
+    return sign + grouped + frac_part + exponent;
 }
 
 int main(int argc, char ** argv) {
