@@ -138,7 +138,10 @@ string getPromptString(int radix) {
 ** - Preserves fractional part and any scientific exponent (e.g. "e+42")
 ** - Works for arbitrarily long strings (>> 2^64)
 */
-static string addThousandsSeparators(const string & input, char sep = ',') {
+static string addThousandsSeparators(const string & input) {
+    char separator = use_facet< numpunct<char> >(cout.getloc()).thousands_sep();
+    char decimalPoint = use_facet< numpunct<char> >(cout.getloc()).decimal_point();
+
     /*
     ** 1) Split off sign.
     */
@@ -166,7 +169,7 @@ static string addThousandsSeparators(const string & input, char sep = ',') {
     /*
     ** 3) Split integer and fractional parts of the mantissa.
     */
-    size_t dot_pos = mantissa.find('.');
+    size_t dot_pos = mantissa.find(decimalPoint);
     string int_part = 
             (dot_pos == string::npos) ? 
                 mantissa : 
@@ -197,7 +200,7 @@ static string addThousandsSeparators(const string & input, char sep = ',') {
     grouped.append(int_part.data(), first_group);
     
     for (size_t i = first_group; i < n; i += 3) {
-        grouped.push_back(sep);
+        grouped.push_back(separator);
         grouped.append(int_part, i, 3);
     }
 
