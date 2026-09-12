@@ -2,4 +2,8 @@ ccalc
 /.vscode
 /build
 /dep
+/autom4te.cache
 .DS_Store
+config.log
+config.status
+configure~
