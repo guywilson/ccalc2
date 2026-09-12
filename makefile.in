@@ -95,7 +95,7 @@ $(DEP)/%.d: ;
 -include $(DEPFILES)
 
 version:
-	$(VB) -i vbuild.ver -t version.c.template -o $(SOURCE)/version.c -major $(MAJOR_VERSION) -minor $(MINOR_VERSION)
+	$(VB) -i ccalc.ver -t version.c.template -o $(SOURCE)/version.c -major $(MAJOR_VERSION) -minor $(MINOR_VERSION)
 
 install: $(TARGET) $(MANTARGET)
 	mkdir -p $(DESTDIR)$(bindir) $(DESTDIR)$(mandir)/man1
