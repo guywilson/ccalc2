@@ -18,10 +18,9 @@
 #include "tokenizer.h"
 #include "expression.h"
 #include "prompt.h"
+#include "cmdarg.h"
 #include "version.h"
 #include "test.h"
-
-// #define DEBUG_CALCULATION                   "2 + (3 * 4) ^ 2 - 13"
 
 #define DEFAULT_PRECISION                   2
 
@@ -209,6 +208,27 @@ static std::string addThousandsSeparators(const std::string & input) {
 }
 
 int main(int argc, char ** argv) {
+    CmdArg args(argc, argv);
+
+    while (args.hasMoreArgs()) {
+        std::string arg = args.nextArg();
+
+        if (arg == "--test") {
+            test();
+            return 0;
+        }
+        else if (arg == "--help") {
+            printUsage();
+        }
+        else if (arg == "--version") {
+            printVersion();
+            return 0;
+        }
+        else {
+            throw calc_error(calc_error::buildMsg("Sorry, I do not understand program argumant '%s'", arg.c_str()));
+        }
+    }
+
     long precision = DEFAULT_PRECISION;
 
     printBanner();
@@ -223,13 +243,8 @@ int main(int argc, char ** argv) {
     bool loop = true;
 
     while (loop) {
-#ifndef DEBUG_CALCULATION
         prompt.setPrompt(getPromptString(system.getRadix()));
         std::string response = prompt.read();
-#else
-        std::string response = DEBUG_CALCULATION;
-        loop = false;
-#endif
 
         if (response.compare("quit") == 0 || response.compare("q") == 0 || response.compare("exit") == 0) {
             loop = false;
