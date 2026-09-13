@@ -7,88 +7,86 @@
 #include "operator.h"
 #include "operand.h"
 
-using namespace std;
-
 #ifndef __INCL_FUNCTION
 #define __INCL_FUNCTION
 
-static inline bool isTokenFunctionSin(const string & token) {
+static inline bool isTokenFunctionSin(const std::string & token) {
     return (token.compare("sin") == 0);
 }
 
-static inline bool isTokenFunctionCos(const string & token) {
+static inline bool isTokenFunctionCos(const std::string & token) {
     return (token.compare("cos") == 0);
 }
 
-static inline bool isTokenFunctionTan(const string & token) {
+static inline bool isTokenFunctionTan(const std::string & token) {
     return (token.compare("tan") == 0);
 }
 
-static inline bool isTokenFunctionAsin(const string & token) {
+static inline bool isTokenFunctionAsin(const std::string & token) {
     return (token.compare("asin") == 0);
 }
 
-static inline bool isTokenFunctionAcos(const string & token) {
+static inline bool isTokenFunctionAcos(const std::string & token) {
     return (token.compare("acos") == 0);
 }
 
-static inline bool isTokenFunctionAtan(const string & token) {
+static inline bool isTokenFunctionAtan(const std::string & token) {
     return (token.compare("atan") == 0);
 }
 
-static inline bool isTokenFunctionSinh(const string & token) {
+static inline bool isTokenFunctionSinh(const std::string & token) {
     return (token.compare("sinh") == 0);
 }
 
-static inline bool isTokenFunctionCosh(const string & token) {
+static inline bool isTokenFunctionCosh(const std::string & token) {
     return (token.compare("cosh") == 0);
 }
 
-static inline bool isTokenFunctionTanh(const string & token) {
+static inline bool isTokenFunctionTanh(const std::string & token) {
     return (token.compare("tanh") == 0);
 }
 
-static inline bool isTokenFunctionAsinh(const string & token) {
+static inline bool isTokenFunctionAsinh(const std::string & token) {
     return (token.compare("asinh") == 0);
 }
 
-static inline bool isTokenFunctionAcosh(const string & token) {
+static inline bool isTokenFunctionAcosh(const std::string & token) {
     return (token.compare("acosh") == 0);
 }
 
-static inline bool isTokenFunctionAtanh(const string & token) {
+static inline bool isTokenFunctionAtanh(const std::string & token) {
     return (token.compare("atanh") == 0);
 }
 
-static inline bool isTokenFunctionSqrt(const string & token) {
+static inline bool isTokenFunctionSqrt(const std::string & token) {
     return (token.compare("sqrt") == 0);
 }
 
-static inline bool isTokenFunctionLog(const string & token) {
+static inline bool isTokenFunctionLog(const std::string & token) {
     return (token.compare("log") == 0);
 }
 
-static inline bool isTokenFunctionLn(const string & token) {
+static inline bool isTokenFunctionLn(const std::string & token) {
     return (token.compare("ln") == 0);
 }
 
-static inline bool isTokenFunctionFact(const string & token) {
+static inline bool isTokenFunctionFact(const std::string & token) {
     return (token.compare("fact") == 0);
 }
 
-static inline bool isTokenFunctionDeg(const string & token) {
+static inline bool isTokenFunctionDeg(const std::string & token) {
     return (token.compare("deg") == 0);
 }
 
-static inline bool isTokenFunctionRad(const string & token) {
+static inline bool isTokenFunctionRad(const std::string & token) {
     return (token.compare("rad") == 0);
 }
 
-static inline bool isTokenFunctionNot(const string & token) {
+static inline bool isTokenFunctionNot(const std::string & token) {
     return (token.compare("not") == 0);
 }
 
-static inline bool isTokenFunction(const string & token) {
+static inline bool isTokenFunction(const std::string & token) {
     return (isTokenFunctionSin(token) ||
             isTokenFunctionCos(token) ||
             isTokenFunctionTan(token) ||
@@ -139,7 +137,7 @@ class Function : public Operator {
         Operand functionOperand;
 
     public:
-        Function(const string & token) : Operator() {
+        Function(const std::string & token) : Operator() {
             if (isTokenFunctionSin(token)) {
                 functionId = function_sin;
             }
@@ -205,11 +203,11 @@ class Function : public Operator {
             opPrescedence = 5;
         }
 
-        static const string CLASS_NAME() {
+        static const std::string CLASS_NAME() {
             return "Function";
         }
 
-        const string className() override {
+        const std::string className() override {
             return Function::CLASS_NAME();
         }
 
@@ -217,12 +215,12 @@ class Function : public Operator {
             functionOperand = o;
         }
 
-        static bool isFunction(const string & token) {
+        static bool isFunction(const std::string & token) {
             return isTokenFunction(token);
         }
 
-        string evaluate() override {
-            string answer;
+        std::string evaluate() override {
+            std::string answer;
 
             Operand result;
 

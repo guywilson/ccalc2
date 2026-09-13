@@ -21,8 +21,6 @@
 #include "version.h"
 #include "test.h"
 
-using namespace std;
-
 // #define DEBUG_CALCULATION                   "2 + (3 * 4) ^ 2 - 13"
 
 #define DEFAULT_PRECISION                   2
@@ -35,7 +33,7 @@ const char * pszWarranty =
     "under certain conditions.\n\n";
 
 static void printVersion(void) {
-    cout <<"CCALC version '" << getVersion() << "' - built [" << getBuildDate() << "]" << endl << endl;
+    std::cout <<"CCALC version '" << getVersion() << "' - built [" << getBuildDate() << "]" << std::endl << std::endl;
 }
 
 static void printBanner(void) {
@@ -47,61 +45,61 @@ static void printBanner(void) {
 
     int year = localTime->tm_year + 1900;
 
-	cout << endl << "*** Welcome to CCALC v" << getVersion() << " ***" << endl << endl;
-    cout << "A cmd line scientific calculator. Copyright © Guy Wilson " << year << endl;
-	cout << "Type a calculation or command at the prompt, type 'help' for info." << endl << endl;
+	std::cout << std::endl << "*** Welcome to CCALC v" << getVersion() << " ***" << std::endl << std::endl;
+    std::cout << "A cmd line scientific calculator. Copyright © Guy Wilson " << year << std::endl;
+	std::cout << "Type a calculation or command at the prompt, type 'help' for info." << std::endl << std::endl;
 }
 
 static void printUsage(void) {
     printBanner();
-    cout << pszWarranty;
+    std::cout << pszWarranty;
 
-    cout << "Operators supported:" << endl;
-    cout << "\t+, -, *, /, %% (Modulo)" << endl;
-    cout << "\t& (AND), | (OR), ~ (XOR)" << endl;
-    cout << "\t< (left shift), > (right shift)" << endl;
-    cout << "\t^ (power, e.g. x to the power of y)" << endl;
-    cout << "\t: (root, e.g. x : y - the yth root of x)" << endl << endl;
-    cout << "\tNesting is achieved with braces ()" << endl << endl;
-    cout << "Functions supported:" << endl;
-    cout << "\tsin(x)\treturn the sine of the angle x degrees" << endl;
-    cout << "\tcos(x)\treturn the cosine of the angle x degrees" << endl;
-    cout << "\ttan(x)\treturn the tangent of the angle x degrees" << endl;
-    cout << "\tasin(x)\treturn the angle in degrees of arcsine(x)" << endl;
-    cout << "\tacos(x)\treturn the angle in degrees of arccosine(x)" << endl;
-    cout << "\tatan(x)\treturn the angle in degrees of arctangent(x)" << endl;
-    cout << "\tsinh(x)\treturn the hyperbolic sine of the angle x radians" << endl;
-    cout << "\tcosh(x)\treturn the hyperbolic cosine of the angle x radians" << endl;
-    cout << "\ttanh(x)\treturn the hyperbolic tangent of the angle x radians" << endl;
-    cout << "\tasinh(x) return the inverse hyperbolic sine of angle x in radians" << endl;
-    cout << "\tacosh(x) return the inverse hyperbolic cosine of angle x in radians" << endl;
-    cout << "\tatanh(x) return the inverse hyperbolic tangent of angle x in radians" << endl;
-    cout << "\tsqrt(x)\treturn the square root of x" << endl;
-    cout << "\tlog(x)\treturn the log of x" << endl;
-    cout << "\tln(x)\treturn the natural log of x" << endl;
-    cout << "\tfact(x)\treturn the factorial of x" << endl;
-    cout << "\trad(x)\tthe value in radians of x degrees" << endl;
-    cout << "\tdeg(x)\tthe value in degrees of x radians" << endl;
-    cout << "Constants supported:" << endl;
-    cout << "\tpi\tthe ratio pi" << endl;
-    cout << "\teu\tEulers constant" << endl;
-    cout << "\tc\tthe speed of light in a vacuum" << endl << endl;
-    cout << "Commands supported:" << endl;
-    cout << "\tdec\tSwitch to decimal mode" << endl;
-    cout << "\thex\tSwitch to hexadecimal mode" << endl;
-    cout << "\tbin\tSwitch to binary mode" << endl;
-    cout << "\toct\tSwitch to octal mode" << endl;
-    cout << "\tsetpn\tSet the precision to n" << endl;
-    cout << "\tfmton\tSwitch on output formatting (on by default)" << endl;
-    cout << "\tfmtoff\tSwitch off output formatting" << endl;
-    cout << "\thelp\tThis help text" << endl;
-    cout << "\ttest\tRun a self test of the calculator" << endl;
-    cout << "\tversion\tPrint the calculator version" << endl;
-    cout << "\texit\tExit the calculator" << endl << endl;
+    std::cout << "Operators supported:" << std::endl;
+    std::cout << "\t+, -, *, /, %% (Modulo)" << std::endl;
+    std::cout << "\t& (AND), | (OR), ~ (XOR)" << std::endl;
+    std::cout << "\t< (left shift), > (right shift)" << std::endl;
+    std::cout << "\t^ (power, e.g. x to the power of y)" << std::endl;
+    std::cout << "\t: (root, e.g. x : y - the yth root of x)" << std::endl << std::endl;
+    std::cout << "\tNesting is achieved with braces ()" << std::endl << std::endl;
+    std::cout << "Functions supported:" << std::endl;
+    std::cout << "\tsin(x)\treturn the sine of the angle x degrees" << std::endl;
+    std::cout << "\tcos(x)\treturn the cosine of the angle x degrees" << std::endl;
+    std::cout << "\ttan(x)\treturn the tangent of the angle x degrees" << std::endl;
+    std::cout << "\tasin(x)\treturn the angle in degrees of arcsine(x)" << std::endl;
+    std::cout << "\tacos(x)\treturn the angle in degrees of arccosine(x)" << std::endl;
+    std::cout << "\tatan(x)\treturn the angle in degrees of arctangent(x)" << std::endl;
+    std::cout << "\tsinh(x)\treturn the hyperbolic sine of the angle x radians" << std::endl;
+    std::cout << "\tcosh(x)\treturn the hyperbolic cosine of the angle x radians" << std::endl;
+    std::cout << "\ttanh(x)\treturn the hyperbolic tangent of the angle x radians" << std::endl;
+    std::cout << "\tasinh(x) return the inverse hyperbolic sine of angle x in radians" << std::endl;
+    std::cout << "\tacosh(x) return the inverse hyperbolic cosine of angle x in radians" << std::endl;
+    std::cout << "\tatanh(x) return the inverse hyperbolic tangent of angle x in radians" << std::endl;
+    std::cout << "\tsqrt(x)\treturn the square root of x" << std::endl;
+    std::cout << "\tlog(x)\treturn the log of x" << std::endl;
+    std::cout << "\tln(x)\treturn the natural log of x" << std::endl;
+    std::cout << "\tfact(x)\treturn the factorial of x" << std::endl;
+    std::cout << "\trad(x)\tthe value in radians of x degrees" << std::endl;
+    std::cout << "\tdeg(x)\tthe value in degrees of x radians" << std::endl;
+    std::cout << "Constants supported:" << std::endl;
+    std::cout << "\tpi\tthe ratio pi" << std::endl;
+    std::cout << "\teu\tEulers constant" << std::endl;
+    std::cout << "\tc\tthe speed of light in a vacuum" << std::endl << std::endl;
+    std::cout << "Commands supported:" << std::endl;
+    std::cout << "\tdec\tSwitch to decimal mode" << std::endl;
+    std::cout << "\thex\tSwitch to hexadecimal mode" << std::endl;
+    std::cout << "\tbin\tSwitch to binary mode" << std::endl;
+    std::cout << "\toct\tSwitch to octal mode" << std::endl;
+    std::cout << "\tsetpn\tSet the precision to n" << std::endl;
+    std::cout << "\tfmton\tSwitch on output formatting (on by default)" << std::endl;
+    std::cout << "\tfmtoff\tSwitch off output formatting" << std::endl;
+    std::cout << "\thelp\tThis help text" << std::endl;
+    std::cout << "\ttest\tRun a self test of the calculator" << std::endl;
+    std::cout << "\tversion\tPrint the calculator version" << std::endl;
+    std::cout << "\texit\tExit the calculator" << std::endl << std::endl;
 }
 
-string getRadixCode(int radix) {
-    string code;
+std::string getRadixCode(int radix) {
+    std::string code;
 
     switch (radix) {
         case DECIMAL:
@@ -124,8 +122,8 @@ string getRadixCode(int radix) {
     return code;
 }
 
-string getPromptString(int radix) {
-    stringstream s;
+std::string getPromptString(int radix) {
+    std::stringstream s;
 
     s << "calc [" << getRadixCode(radix) << "]> ";
 
@@ -138,15 +136,15 @@ string getPromptString(int radix) {
 ** - Preserves fractional part and any scientific exponent (e.g. "e+42")
 ** - Works for arbitrarily long strings (>> 2^64)
 */
-static string addThousandsSeparators(const string & input) {
-    char separator = use_facet< numpunct<char> >(cout.getloc()).thousands_sep();
-    char decimalPoint = use_facet< numpunct<char> >(cout.getloc()).decimal_point();
+static std::string addThousandsSeparators(const std::string & input) {
+    char separator = std::use_facet< std::numpunct<char> >(std::cout.getloc()).thousands_sep();
+    char decimalPoint = std::use_facet< std::numpunct<char> >(std::cout.getloc()).decimal_point();
 
     /*
     ** 1) Split off sign.
     */
-    string sign;
-    size_t pos = 0;
+    std::string sign;
+    std::size_t pos = 0;
     if (input[pos] == '+' || input[pos] == '-') {
         sign.assign(1, input[pos]);
         ++pos;
@@ -155,51 +153,51 @@ static string addThousandsSeparators(const string & input) {
     /*
     ** 2) Split mantissa and exponent (e/E …). We keep the exponent untouched.
     */
-    size_t exp_pos = input.find_first_of("eE", pos);
-    string mantissa = 
-            (exp_pos == string::npos) ? 
+    std::size_t exp_pos = input.find_first_of("eE", pos);
+    std::string mantissa =
+            (exp_pos == std::string::npos) ?
                 input.substr(pos) : 
                 input.substr(pos, exp_pos - pos);
 
-    string exponent = 
-            (exp_pos == string::npos) ? 
-                string() : 
+    std::string exponent =
+            (exp_pos == std::string::npos) ?
+                std::string() :
                 input.substr(exp_pos); // includes the 'e' or 'E' and whatever follows
 
     /*
     ** 3) Split integer and fractional parts of the mantissa.
     */
-    size_t dot_pos = mantissa.find(decimalPoint);
-    string int_part = 
-            (dot_pos == string::npos) ? 
+    std::size_t dot_pos = mantissa.find(decimalPoint);
+    std::string int_part =
+            (dot_pos == std::string::npos) ?
                 mantissa : 
                 mantissa.substr(0, dot_pos);
 
-    string frac_part = 
+    std::string frac_part =
             (dot_pos == std::string::npos) ? 
-            string() : 
+            std::string() :
             mantissa.substr(dot_pos); // keep decimal point + fraction as-is
 
     /*
     ** 4) Insert separators into the integer part, grouping from the right.
     */
-    const size_t n = int_part.size();
+    const std::size_t n = int_part.size();
     if (n <= 3) {
         // No grouping needed.
         return sign + int_part + frac_part + exponent;
     }
 
-    string grouped;
+    std::string grouped;
     grouped.reserve(n + n / 3);
 
-    size_t first_group = n % 3;
+    std::size_t first_group = n % 3;
     if (first_group == 0) {
         first_group = 3;
     }
 
     grouped.append(int_part.data(), first_group);
     
-    for (size_t i = first_group; i < n; i += 3) {
+    for (std::size_t i = first_group; i < n; i += 3) {
         grouped.push_back(separator);
         grouped.append(int_part, i, 3);
     }
@@ -219,7 +217,7 @@ int main(int argc, char ** argv) {
     system.setRadix(DECIMAL);
 
     Prompt prompt;
-    string answer = "0.00";
+    std::string answer = "0.00";
 
     bool isFormattingOn = true;
     bool loop = true;
@@ -227,9 +225,9 @@ int main(int argc, char ** argv) {
     while (loop) {
 #ifndef DEBUG_CALCULATION
         prompt.setPrompt(getPromptString(system.getRadix()));
-        string response = prompt.read();
+        std::string response = prompt.read();
 #else
-        string response = DEBUG_CALCULATION;
+        std::string response = DEBUG_CALCULATION;
         loop = false;
 #endif
 
@@ -243,11 +241,11 @@ int main(int argc, char ** argv) {
             printUsage();
         }
         else if (response.find("setp", 0) == 0) {
-            string p = response.substr(4);
+            std::string p = response.substr(4);
             precision = strtol(p.c_str(), NULL, 10);
 
             if (precision < 0L || precision > 80) {
-                cout << "Invalid precision, must be between 0 and 80" << endl;
+                std::cout << "Invalid precision, must be between 0 and 80" << std::endl;
                 precision = DEFAULT_PRECISION;
             }
         }
@@ -267,7 +265,7 @@ int main(int argc, char ** argv) {
                 system.setRadix(DECIMAL);
 
                 Operand o(answer, oldRadix);
-                cout << "Last answer = " << o.toString(precision) << endl << endl;
+                std::cout << "Last answer = " << o.toString(precision) << std::endl << std::endl;
             }
         }
         else if (response.compare("hex") == 0) {
@@ -277,7 +275,7 @@ int main(int argc, char ** argv) {
                 system.setRadix(HEXADECIMAL);
 
                 Operand o(answer, oldRadix);
-                cout << "Last answer = " << o.toString(precision) << endl << endl;
+                std::cout << "Last answer = " << o.toString(precision) << std::endl << std::endl;
             }
          }
         else if (response.compare("oct") == 0) {
@@ -287,7 +285,7 @@ int main(int argc, char ** argv) {
                 system.setRadix(OCTAL);
 
                 Operand o(answer, oldRadix);
-                cout << "Last answer = " << o.toString(precision) << endl << endl;
+                std::cout << "Last answer = " << o.toString(precision) << std::endl << std::endl;
             }
         }
         else if (response.compare("bin") == 0) {
@@ -297,7 +295,7 @@ int main(int argc, char ** argv) {
                 system.setRadix(BINARY);
 
                 Operand o(answer, oldRadix);
-                cout << "Last answer = " << o.toString(precision) << endl << endl;
+                std::cout << "Last answer = " << o.toString(precision) << std::endl << std::endl;
             }
         }
         else {
@@ -307,14 +305,14 @@ int main(int argc, char ** argv) {
                     answer = e.evaluate(response);
 
                     if (isFormattingOn && system.getRadix() == DECIMAL) {
-                        cout << "\t" << response << " = " << addThousandsSeparators(answer) << endl << endl;
+                        std::cout << "\t" << response << " = " << addThousandsSeparators(answer) << std::endl << std::endl;
                     }
                     else {
-                        cout << "\t" << response << " = " << answer << endl << endl;
+                        std::cout << "\t" << response << " = " << answer << std::endl << std::endl;
                     }
                 }
                 catch (calc_error & e) {
-                    cout << "Error: " << e.what() << endl << endl;
+                    std::cout << "Error: " << e.what() << std::endl << std::endl;
                 }
             }
         }
@@ -359,25 +357,25 @@ void test() {
     Expression expression(testPrecision);
 
     for (int i = 0;i < numTests;i++) {
-        string testExpression = t.getTestExpression(i);
+        std::string testExpression = t.getTestExpression(i);
 
         system.setRadix(t.getRadix(i));
 
-        cout << "Testing: '" << testExpression << "'..." << endl;
+        std::cout << "Testing: '" << testExpression << "'..." << std::endl;
 
-        string actualResult = expression.evaluate(testExpression);
+        std::string actualResult = expression.evaluate(testExpression);
 
         if (t.assertTest(i, actualResult)) {
-            cout << "    Test passed :) - expected: [" << t.getExpectedResult(i) << "], actual: [" << actualResult << "]" << endl << endl;
+            std::cout << "    Test passed :) - expected: [" << t.getExpectedResult(i) << "], actual: [" << actualResult << "]" << std::endl << std::endl;
             numPassed++;
         }
         else {
-            cout << "    Test failed :( - expected: [" << t.getExpectedResult(i) << "], actual: [" << actualResult << "]" << endl << endl; 
+            std::cout << "    Test failed :( - expected: [" << t.getExpectedResult(i) << "], actual: [" << actualResult << "]" << std::endl << std::endl;
             numFailed++;
         }
     }
 
     system.setRadix(originalRadix);
 
-    cout << "Total tests ran: " << numTests << ", passed: " << numPassed << ", failed: " << numFailed << endl << endl;
+    std::cout << "Total tests ran: " << numTests << ", passed: " << numPassed << ", failed: " << numFailed << std::endl << std::endl;
 }

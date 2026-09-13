@@ -1,14 +1,12 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 #ifndef __INCL_TEST_FRAMEWORK
 #define __INCL_TEST_FRAMEWORK
 
 typedef struct {
-    string expression;
-    string expectedResult;
+    std::string expression;
+    std::string expectedResult;
 
     int radix;
 }
@@ -16,7 +14,7 @@ calc_test_t;
 
 class TestFramework {
     private:
-        vector<calc_test_t *> tests;
+        std::vector<calc_test_t *> tests;
 
     public:
         ~TestFramework() {
@@ -25,7 +23,7 @@ class TestFramework {
             }
         }
 
-        void addTest(const string & expression, const string & expectedResult, int radix) {
+        void addTest(const std::string & expression, const std::string & expectedResult, int radix) {
             calc_test_t * test = new calc_test_t;
 
             test->expression = expression;
@@ -39,11 +37,11 @@ class TestFramework {
             return tests.size();
         }
 
-        string getTestExpression(int i) {
+        std::string getTestExpression(int i) {
             return tests[i]->expression;
         }
 
-        string getExpectedResult(int i) {
+        std::string getExpectedResult(int i) {
             return tests[i]->expectedResult;
         }
 
@@ -51,7 +49,7 @@ class TestFramework {
             return tests[i]->radix;
         } 
 
-        bool assertTest(int i, string & actualResult) {
+        bool assertTest(int i, std::string & actualResult) {
             if (actualResult.compare(tests[i]->expectedResult) == 0) {
                 return true;
             }

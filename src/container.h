@@ -10,8 +10,6 @@
 #include "operand.h"
 #include "operator.h"
 
-using namespace std;
-
 #ifndef __INCL_CONTAINER
 #define __INCL_CONTAINER
 
@@ -20,12 +18,12 @@ class BaseContainer {
         BaseContainer() {}
 
         virtual bool isEmpty() = 0;
-        virtual size_t size() = 0;
+        virtual std::size_t size() = 0;
 };
 
 class TokenArray : public BaseContainer {
     private:
-        vector<Token *> tokens;
+        std::vector<Token *> tokens;
 
     public:
         TokenArray() : BaseContainer() {}
@@ -49,14 +47,14 @@ class TokenArray : public BaseContainer {
             return (tokens.empty());
         }
 
-        size_t size() override {
+        std::size_t size() override {
             return tokens.size();
         }
 };
 
 class TokenStack : public BaseContainer {
     private:
-        stack<Token *> tokens;
+        std::stack<Token *> tokens;
 
     public:
         TokenStack() : BaseContainer() {}
@@ -69,7 +67,7 @@ class TokenStack : public BaseContainer {
             return (tokens.empty());
         }
 
-        size_t size() override {
+        std::size_t size() override {
             return tokens.size();
         }
 
@@ -120,7 +118,7 @@ class TokenStack : public BaseContainer {
 
 class TokenQueue : public BaseContainer {
     private:
-        queue<Token *> tokens;
+        std::queue<Token *> tokens;
 
     public:
         TokenQueue() : BaseContainer() {}
@@ -129,7 +127,7 @@ class TokenQueue : public BaseContainer {
             return (tokens.empty());
         }
 
-        size_t size() override {
+        std::size_t size() override {
             return tokens.size();
         }
 

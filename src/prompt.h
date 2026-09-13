@@ -1,15 +1,13 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 class Prompt {
     private:
-        string prompt;
+        std::string prompt;
         
     public:
         Prompt() {}
 
-        void setPrompt(const string & prompt);
-        string read();
+        void setPrompt(const std::string & prompt);
+        std::string read();
 };

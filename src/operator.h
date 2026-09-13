@@ -7,60 +7,58 @@
 #include "token.h"
 #include "operand.h"
 
-using namespace std;
-
 #ifndef __INCL_OPERATOR
 #define __INCL_OPERATOR
 
-static inline bool isTokenPlus(const string & token) {
+static inline bool isTokenPlus(const std::string & token) {
     return (token.compare("+") == 0);
 }
 
-static inline bool isTokenMinus(const string & token) {
+static inline bool isTokenMinus(const std::string & token) {
     return (token.compare("-") == 0);
 }
 
-static inline bool isTokenMultiply(const string & token) {
+static inline bool isTokenMultiply(const std::string & token) {
     return (token.compare("*") == 0);
 }
 
-static inline bool isTokenDivide(const string & token) {
+static inline bool isTokenDivide(const std::string & token) {
     return (token.compare("/") == 0);
 }
 
-static inline bool isTokenMod(const string & token) {
+static inline bool isTokenMod(const std::string & token) {
     return (token.compare("%") == 0);
 }
 
-static inline bool isTokenPower(const string & token) {
+static inline bool isTokenPower(const std::string & token) {
     return (token.compare("^") == 0);
 }
 
-static inline bool isTokenRoot(const string & token) {
+static inline bool isTokenRoot(const std::string & token) {
     return (token.compare(":") == 0);
 }
 
-static inline bool isTokenAND(const string & token) {
+static inline bool isTokenAND(const std::string & token) {
     return (token.compare("&") == 0);
 }
 
-static inline bool isTokenOR(const string & token) {
+static inline bool isTokenOR(const std::string & token) {
     return (token.compare("|") == 0);
 }
 
-static inline bool isTokenXOR(const string & token) {
+static inline bool isTokenXOR(const std::string & token) {
     return (token.compare("~") == 0);
 }
 
-static inline bool isTokenLShift(const string & token) {
+static inline bool isTokenLShift(const std::string & token) {
     return (token.compare("<") == 0);
 }
 
-static inline bool isTokenRShift(const string & token) {
+static inline bool isTokenRShift(const std::string & token) {
     return (token.compare(">") == 0);
 }
 
-static inline bool isTokenOperator(const string & token) {
+static inline bool isTokenOperator(const std::string & token) {
     return (isTokenPlus(token) ||
             isTokenMinus(token) ||
             isTokenMultiply(token) ||
@@ -112,7 +110,7 @@ class Operator : public Token {
             opType = operator_unkown;
         }
 
-        Operator(const string & token) : Token(token) {
+        Operator(const std::string & token) : Token(token) {
             if (isTokenPlus(token)) {
                 opType = operator_plus;
                 opPrescedence = 2;
@@ -180,15 +178,15 @@ class Operator : public Token {
             }
         }
 
-        static bool isOperator(const string & token) {
+        static bool isOperator(const std::string & token) {
             return isTokenOperator(token);
         }
 
-        static const string CLASS_NAME() {
+        static const std::string CLASS_NAME() {
             return "Operator";
         }
 
-        virtual const string className() override {
+        virtual const std::string className() override {
             return Operator::CLASS_NAME();
         }
 
@@ -213,7 +211,7 @@ class Operator : public Token {
             setRHOperand(rhs);
         }
 
-        string evaluate() override {
+        std::string evaluate() override {
             Operand result;
 
             switch (opType) {

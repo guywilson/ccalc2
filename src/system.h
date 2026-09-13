@@ -1,7 +1,5 @@
 #include <string>
 
-using namespace std;
-
 #ifndef __INCL_SYSTEM
 #define __INCL_SYSTEM
 

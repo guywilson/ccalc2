@@ -6,18 +6,16 @@
 
 #include "prompt.h"
 
-using namespace std;
-
-void Prompt::setPrompt(const string & prompt) {
+void Prompt::setPrompt(const std::string & prompt) {
     this->prompt = prompt;
 }
 
-string Prompt::read() {
+std::string Prompt::read() {
     char * r = readline(this->prompt.c_str());
     
     add_history(r);
 
-    string response = r;
+    std::string response = r;
 
     free(r);
 

@@ -9,8 +9,6 @@
 #include "system.h"
 #include "token.h"
 
-using namespace std;
-
 #ifndef __INCL_OPERAND
 #define __INCL_OPERAND
 
@@ -57,7 +55,7 @@ class Operand : public Token {
             mpfr_init2(value, MPFR_BASE_PRECISION);
         }
 
-        string toBase2() {
+        std::string toBase2() {
             char szBinaryString[BASE2_OUTPUT_LEN + 1];
             char szOutputString[BASE2_OUTPUT_LEN + 1];
             int i = BASE2_OUTPUT_LEN - 1;
@@ -76,7 +74,7 @@ class Operand : public Token {
 
             strncpy(szOutputString, &szBinaryString[i + 1], BASE2_OUTPUT_LEN);
 
-            string output = szOutputString;
+            std::string output = szOutputString;
 
             return output;
         }
@@ -88,7 +86,7 @@ class Operand : public Token {
             initialiseValue();
         }
 
-        Operand(const string & token, int radix = DECIMAL) : Token(token) {
+        Operand(const std::string & token, int radix = DECIMAL) : Token(token) {
             initialiseValue();
             mpfr_strtofr(value, token.c_str(), NULL, radix, MPFR_RNDA);
         }
@@ -102,7 +100,7 @@ class Operand : public Token {
             mpfr_clear(value);
         }
 
-        static bool isOperand(const string & token) {
+        static bool isOperand(const std::string & token) {
             System & system = System::getInstance();
 
             for (int i = 0;i < token.length();i++) {
@@ -116,10 +114,10 @@ class Operand : public Token {
             return true;
         }
 
-        string toString(long precision) {
+        std::string toString(long precision) {
             char szOutputString[OUTPUT_MAX_STRING_LENGTH];
             char szFormatString[FORMAT_STRING_LENGTH];
-            string output;
+            std::string output;
 
             System & system = System::getInstance();
 
@@ -148,15 +146,15 @@ class Operand : public Token {
             return output;
         }
 
-        virtual string evaluate() override {
+        virtual std::string evaluate() override {
             return toString(INTERMEDIATE_PRECISION);
         }
 
-        static const string CLASS_NAME() {
+        static const std::string CLASS_NAME() {
             return "Operand";
         }
 
-        virtual const string className() override {
+        virtual const std::string className() override {
             return Operand::CLASS_NAME();
         }
 

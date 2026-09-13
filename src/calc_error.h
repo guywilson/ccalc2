@@ -4,17 +4,15 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-using namespace std;
-
 #ifndef __CALC_ERROR
 #define __CALC_ERROR
 
 #define MESSAGE_BUFFER_LEN                  4096
 
-class calc_error : public exception
+class calc_error : public std::exception
 {
     private:
-        string          message;
+        std::string          message;
 
     public:
         const char * getTitle() {

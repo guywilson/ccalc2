@@ -5,28 +5,26 @@
 
 #include "operand.h"
 
-using namespace std;
-
 #ifndef __INCL_CONSTANT
 #define __INCL_CONSTANT
 
 #define CONSTANT_C                          299792458U
 
-static inline bool isTokenPi(const string & token) {
+static inline bool isTokenPi(const std::string & token) {
     return (token.compare("pi") == 0);
 }
 
-static inline bool isTokenEu(const string & token) {
+static inline bool isTokenEu(const std::string & token) {
     return (token.compare("eu") == 0);
 }
 
-static inline bool isTokenC(const string & token) {
+static inline bool isTokenC(const std::string & token) {
     return (token.compare("c") == 0);
 }
 
 class Constant : public Operand {
     public:
-        Constant(const string & token) : Operand() {
+        Constant(const std::string & token) : Operand() {
             if (isTokenPi(token)) {
                 mpfr_const_pi(value, MPFR_RNDA);
             }
@@ -40,7 +38,7 @@ class Constant : public Operand {
             setToken(toString(INTERMEDIATE_PRECISION));
         }
 
-        static bool isConstant(const string & token) {
+        static bool isConstant(const std::string & token) {
             return (isTokenPi(token) || isTokenEu(token) || isTokenC(token));
         }
 };
